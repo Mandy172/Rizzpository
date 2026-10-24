@@ -1,124 +1,60 @@
 # CivicSort
 
-CivicSort is a multilingual civic-complaint triage and dispatch demo built for Hacktoberfest '26 Hack Day, Problem Statement #15. It helps a Pune municipal ward receive complaints, route them to the right department, prioritise urgent risks, and group reports about the same incident.
+Multilingual civic complaint triage for municipal (PMC) operations.
 
-> 🌐 **Live Municipal Operations Console**: [https://v0-pmc-opperations.vercel.app/](https://v0-pmc-opperations.vercel.app/)
+Citizens report problems in **English, Hindi, Marathi or Hinglish** at `/report`. Each report is triaged for category, department and urgency, duplicate reports are grouped, and officers get a prioritized queue at `/` with dispatch and resolve actions.
 
-## What it does
+**Team:** [add names]  
+**Event:** Hacktoberfest Hack Day
 
-- Lets citizens submit a complaint in English, Hindi, Marathi, or Hinglish, with an optional photo and landmark.
-- Routes each report to a category, responsible department, and urgency level.
-- Computes a calibrated multi-factor operational confidence score and automatically trips a safety review latch (`needs_human_review`) for ambiguous inputs.
-- Displays a ranked operations queue, Pune ward map, analytics, and review flags.
-- Groups similar reports using multilingual embeddings and semantic clustering.
-- Keeps citizen submissions separate from the labelled benchmark dataset.
+## How it works
 
-## User flow
+1. **Citizen portal** (`/report`, Next.js) sends the text and landmark to `POST /triage`. If the API is unreachable it falls back to local keyword rules, and those reports get `USR-` IDs.
+2. **Triage** (`backend/triage.py`, `backend/fast_rules.py`): obvious cases are decided by keyword rules. Everything else goes to `gemma3:4b`, an open-weight model running locally through Ollama. Each API response includes a `source` field (`fast_rules`, `model` or `fallback`).
+3. **Clustering** (`backend/cluster.py`): `bge-m3` multilingual embeddings plus cosine agglomerative clustering group duplicate reports.
+4. **Human review:** a rule-based completeness score flags uncertain reports for an officer (below 0.75, or unknown department or category).
+5. **Officer console** (`/`) reads `GET /complaints` and shows the queue and duplicate groups.
 
-```text
-Citizen portal → multilingual triage → structured route → duplicate clustering → operations dashboard
-```
+## Models
 
-1. A citizen submits a report from **Report a Civic Issue** (`/report`).
-2. The triage pipeline returns a category, department, urgency, confidence score, summary, and location.
-3. The report enters the Ward Operations Center queue.
-4. Officers inspect priority, map location, duplicate groups, and reports needing review.
-5. The officer dispatches the appropriate team or marks the report resolved.
-
-## Run locally
-
-### 1. Start the AI Backend API (Primary)
-
-```bash
-python3 -m pip install -r requirements.txt
-uvicorn backend.api:app --port 8000
-```
-
-### 2. Demo website (Primary)
-
-```bash
-cd frontend
-pnpm install
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) for the Ward Operations Center and [http://localhost:3000/report](http://localhost:3000/report) for the citizen complaint portal. Reports submitted through the portal are routed by the live API and appear on the operations dashboard.
-
-### 3. Python pipeline and backup Streamlit dashboard
-
-```bash
-streamlit run dashboard/app.py
-```
-
-Open the local address shown by Streamlit. The Streamlit screens remain available as a backup demo for the citizen portal (`dashboard/pages/1_🗳️_Submit_Complaint.py`) and municipal dashboard.
-
-### Verification & Automated Tests
-
-```bash
-# Run 100% accuracy evaluation benchmark on 54 Ward-12 complaints
-python3 eval/evaluate.py --results results.json
-
-# Run unit test suite (evaluator & confidence engine)
-python3 -m unittest discover tests
-
-# Validate dataset integrity
-python3 eval/validate_dataset.py
-```
-
-### Optional local AI setup
-
-CivicSort uses fast multilingual rules for clear reports (<1.5ms latency). For ambiguous or image-supported reports, it can use an Ollama model:
-
-```bash
-ollama pull gemma3:4b
-ollama pull bge-m3
-```
-
-Set `LLM_BACKEND=ollama` and `OLLAMA_MODEL=gemma3:4b` in your environment. Gemini can also be configured through `GEMINI_API_KEY`.
-
-## Project structure
-
-| Path | Purpose |
-|---|---|
-| `frontend/app/page.tsx` | Primary Ward Operations Center website |
-| `frontend/app/report/page.tsx` | Primary citizen complaint website |
-| `backend/api.py` | FastAPI bridge connecting the frontend to live triage & clustering |
-| `backend/fast_rules.py` | Sub-millisecond compiled keyword router for scaling |
-| `backend/schema.py` | Canonical Pydantic validation and operational confidence engine |
-| `backend/triage.py` | Structured multilingual complaint routing (Gemini / Ollama) |
-| `backend/cluster.py` | bge-m3 embeddings and duplicate clustering |
-| `dashboard/app.py` | Backup Streamlit operations dashboard |
-| `dashboard/pages/1_🗳️_Submit_Complaint.py` | Backup Streamlit citizen portal |
-| `data/complaints.json` | Labelled benchmark set of 54 complaints |
-| `data/wards.json` | Ward-12 department and map data |
-| `eval/evaluate.py` | Category, department, and severity evaluation benchmark |
-| `tests/` | Automated unit tests for evaluation and confidence scoring |
-
-## Demo dataset
-
-The Ward-12 demonstration dataset includes 54 labelled complaints: 18 English, 14 Hindi, 12 Marathi, and 10 Hinglish. It covers six categories: road damage, water leak, garbage, streetlight, drainage, and other. It also includes eight labelled duplicate groups and reference photos with Creative Commons attribution in [ATTRIBUTION.md](data/photos/ATTRIBUTION.md).
-
-## Team & Contributions
-
-- **Sujay Tudu**: Core AI Pipeline, Fast-Path Regex Router, Operational Confidence Engine, Evaluation Benchmark & Unit Tests.
-- **Manas**: Next.js Municipal Operations Console, Live API Bridge.
-- **Samarth**: Citizen Intake Portal, Form UX & Documentation.
-- **Kritagya Gour**: Ward-12 Dataset Lead, Ground-Truth Labeling & Cross-Lingual Duplicate Validation.
-
-## Models and licenses
-
-| Component | Use | License |
+| Role | Model | How it runs |
 |---|---|---|
-| Ollama | Optional local inference and embeddings | MIT |
-| Gemma | Multilingual and vision triage model | Gemma Terms of Use |
-| Google Gemini | Cloud multimodal vision & text triage | Google APIs Terms of Service |
-| bge-m3 | Multilingual semantic embeddings | MIT |
-| Next.js / React | Primary web console and citizen portal | MIT |
-| Tailwind CSS / Lucide | Modern styling & civic icon suite | MIT / ISC |
-| Streamlit | Backup citizen portal and dashboard | Apache-2.0 |
-| FastAPI | Live backend API bridge | MIT |
-| Pydantic | Structured output validation & confidence scoring | MIT |
-| scikit-learn | Agglomerative duplicate clustering and metrics | BSD-3-Clause |
-| pandas / NumPy | Data processing | BSD-3-Clause |
+| Triage | `gemma3:4b` | Ollama, local |
+| Duplicate clustering | `bge-m3` | Ollama, local |
 
-Project license: [MIT](LICENSE).
+No paid API is needed. (`triage.py` also supports a Gemini backend through `LLM_BACKEND`. It is not what produced our results.)
+
+## Run it
+
+Requirements: Python 3.10+, Node.js, [Ollama](https://ollama.com).
+
+    ollama pull gemma3:4b
+    ollama pull bge-m3
+
+    python -m venv .venv && source .venv/bin/activate
+    pip install -r requirements.txt
+    LLM_BACKEND=ollama OLLAMA_MODEL=gemma3:4b python -m uvicorn backend.api:app --host 0.0.0.0 --port 8000
+
+In a second terminal:
+
+    cd frontend && npm install && npm run dev
+
+Open `http://localhost:3000/report` (citizen) and `http://localhost:3000` (officer). `POST /reset` clears live submissions between demos.
+
+## Evaluation and honest limits
+
+- **Clustering:** tested blind (labels not used) against human-labelled duplicates: ARI 0.84 at threshold 0.25. That threshold was tuned on the same 54 complaints, so treat it as an upper bound. Run `python -m eval.cluster_check`.
+- **Triage accuracy:** `python -m eval.evaluate` scores 54/54 on our dataset. This overstates real-world accuracy, because the keyword rules were written while looking at this dataset.
+- **Confidence** is a rule-based completeness score (`compute_operational_confidence` in `backend/schema.py`), not a model probability and not calibrated. A wrong but well-formed answer can still score high.
+- Romanized Hinglish embeds worse than Devanagari Hindi or Marathi.
+- Photo upload is accepted in the citizen portal but is not yet sent to the officer console.
+- The `dashboard/` Streamlit app is an earlier prototype and is not connected to the live API.
+- A hosted frontend (e.g. Vercel) has no API behind it unless one is tunnelled. The full pipeline runs locally.
+
+## Licenses and third-party notices
+
+- Project code: see [LICENSE](LICENSE).
+- **Gemma** (`gemma3:4b`) is released by Google under the [Gemma Terms of Use](https://ai.google.dev/gemma/terms). It is open-weight, not an OSI-approved open-source license.
+- **bge-m3** is published by BAAI. Check its model card for the current license.
+- **Ollama** is open source (MIT).
+- Sample photos: attribution is in `data/photos/`.
