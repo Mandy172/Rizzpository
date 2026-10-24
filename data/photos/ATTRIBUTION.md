@@ -1,15 +1,12 @@
-# Photo set
+# Photo attribution
 
-This folder reserves six optional image paths used by the demo dataset:
+The images below are optional inputs for vision-based severity testing. Each source page holds the original image and full license terms.
 
-- `water-leak.jpg`
-- `water-leak-2.jpg`
-- `pothole.jpg`
-- `pothole-2.jpg`
-- `garbage.jpg`
-- `garbage-2.jpg`
-- `streetlight.jpg`
-- `blocked-drain.jpg`
-- `fallen-tree.jpg`
-
-The paths are deliberately kept optional in the first working demo. Add only team-owned photos or images with an explicitly compatible license before publishing. Record the original URL, author, and license beneath each filename when it is added.
+| File | Subject | Author | License | Source |
+| --- | --- | --- | --- | --- |
+| `pothole.jpg` | Road pothole | Jakec | CC BY-SA 4.0 | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Pothole_on_Huntington_Creek_Road.JPG) |
+| `water-leak.jpg` | Street water leak | Lewis Clarke | CC BY-SA 2.0 | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Tiverton_,_Bampton_Street_Water_Leak_-_geograph.org.uk_-_1436412.jpg) |
+| `garbage.jpg` | Street waste | melgupta | CC BY-SA 2.0 | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Garbage_Disposal_Hyderabad_2005.jpg) |
+| `streetlight.jpg` | Street lamp | Kreuzschnabel | CC BY-SA 3.0 | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:2013_Street_lamp.jpg) |
+| `blocked-drain.jpg` | Clogged drain | Jonathan Thacker | CC BY-SA 2.0 | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Clogged_drains_-_geograph.org.uk_-_4703773.jpg) |
+| `fallen-tree.jpg` | Road blocked by tree | geograph.org.uk contributor | CC BY-SA 2.0 | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Road_blocked_by_fallen_tree_-_geograph.org.uk_-_2927837.jpg) |
