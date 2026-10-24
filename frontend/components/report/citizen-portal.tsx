@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { CheckCircle2, ChevronLeft, ClipboardCheck, FileImage, LocateFixed, MapPin, ShieldCheck, Sparkles, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { submitComplaint as submitToApi } from '@/lib/api'
 import { CATEGORY_META, CITIZEN_STORAGE_KEY, DEPARTMENT_LABEL, LANGUAGE_META, triageCitizenComplaint, type CitizenTriage } from '@/lib/triage'
 import type { Category, Department, Language, RawComplaint } from '@/lib/types'
 
@@ -70,6 +71,7 @@ export function CitizenPortal() {
   const [photoName, setPhotoName] = useState<string | null>(null)
   const [result, setResult] = useState<RawComplaint | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
 
   const characterCount = text.trim().length
   const canSubmit = characterCount >= 10
@@ -100,10 +102,23 @@ export function CitizenPortal() {
     )
   }
 
-  function submitComplaint() {
+  async function submitComplaint() {
+    if (busy) return
     if (!canSubmit) {
       setNotice('Please describe the issue in at least a few words.')
       return
+    }
+    setBusy(true)
+    setNotice('Analysing your report...')
+    try {
+      const fromApi = await submitToApi(text.trim())
+      setResult({ ...fromApi, location_hint: landmark.trim() || fromApi.location_hint })
+      setNotice(null)
+      return
+    } catch {
+      // API unreachable: fall back to the local rules below
+    } finally {
+      setBusy(false)
     }
     const triage = applyProblemType(triageCitizenComplaint(text), problemType)
     const complaint: RawComplaint = {
