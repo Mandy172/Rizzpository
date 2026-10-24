@@ -96,16 +96,25 @@ Set `LLM_BACKEND=ollama` and `OLLAMA_MODEL=gemma3:4b` in your environment. Gemin
 
 ## Demo dataset
 
-The Ward-12 demonstration dataset includes 54 labelled complaints: 18 English, 14 Hindi, 12 Marathi, and 10 Hinglish. It covers six categories: road damage, water leak, garbage, streetlight, drainage, and other. It also includes eight labelled duplicate groups and optional reference photos with attribution.
+The Ward-12 demonstration dataset includes 54 labelled complaints: 18 English, 14 Hindi, 12 Marathi, and 10 Hinglish. It covers six categories: road damage, water leak, garbage, streetlight, drainage, and other. It also includes eight labelled duplicate groups and reference photos with Creative Commons attribution in [ATTRIBUTION.md](data/photos/ATTRIBUTION.md).
+
+## Team & Contributions
+
+- **Sujay Tudu**: Core AI Pipeline, Fast-Path Regex Router, Operational Confidence Engine, Evaluation Benchmark & Unit Tests.
+- **Manas**: Next.js Municipal Operations Console, Live API Bridge.
+- **Samarth**: Citizen Intake Portal, Form UX & Documentation.
+- **Kritagya Gour**: Ward-12 Dataset Lead, Ground-Truth Labeling & Cross-Lingual Duplicate Validation.
 
 ## Models and licenses
 
 | Component | Use | License |
 |---|---|---|
 | Ollama | Optional local inference and embeddings | MIT |
-| Gemma | Optional multilingual and vision triage model | Gemma Terms of Use |
+| Gemma | Multilingual and vision triage model | Gemma Terms of Use |
+| Google Gemini | Cloud multimodal vision & text triage | Google APIs Terms of Service |
 | bge-m3 | Multilingual semantic embeddings | MIT |
 | Next.js / React | Primary web console and citizen portal | MIT |
+| Tailwind CSS / Lucide | Modern styling & civic icon suite | MIT / ISC |
 | Streamlit | Backup citizen portal and dashboard | Apache-2.0 |
 | FastAPI | Live backend API bridge | MIT |
 | Pydantic | Structured output validation & confidence scoring | MIT |
