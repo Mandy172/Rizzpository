@@ -522,7 +522,7 @@ with tab_ops:
                 .properties(height=170)
                 .configure(**chart_theme)
             )
-            st.altair_chart(ch_cat, width="stretch")
+            st.altair_chart(ch_cat, use_container_width=True)
         else:
             st.info("No data")
 
@@ -545,7 +545,7 @@ with tab_ops:
                 .properties(height=170)
                 .configure(**chart_theme)
             )
-            st.altair_chart(ch_sev, width="stretch")
+            st.altair_chart(ch_sev, use_container_width=True)
         else:
             st.info("No data")
 
@@ -566,7 +566,7 @@ with tab_ops:
                 .properties(height=170)
                 .configure(**chart_theme)
             )
-            st.altair_chart(ch_dept, width="stretch")
+            st.altair_chart(ch_dept, use_container_width=True)
         else:
             st.info("No data")
 
