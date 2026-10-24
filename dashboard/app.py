@@ -7,561 +7,808 @@ import streamlit as st
 import altair as alt
 import pydeck as pdk
 
-# Ensure project root in sys.path
+# Ensure project root is in path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-# ── Page config ──────────────────────────────────────────────────────────────
+# ── Streamlit Setup ───────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="CivicSort · Triage Dashboard",
+    page_title="CivicSort · Intelligent Municipal Triage",
     page_icon="🏙️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── Global CSS ────────────────────────────────────────────────────────────────
-st.markdown("""
-<style>
-/* ---- fonts & base ---- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+# ── Session State for Interactive Actions ─────────────────────────────────────
+if "resolved_ids" not in st.session_state:
+    st.session_state.resolved_ids = set()
+if "dispatched_ids" not in st.session_state:
+    st.session_state.dispatched_ids = set()
 
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
+# ── Ultra-modern CSS Styling (Zero-indent HTML blocks to prevent markdown codeblocks) ──
+st.markdown("""<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+html, body, [class*="css"], * {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-/* ---- hide default streamlit chrome ---- */
 #MainMenu, footer, header { visibility: hidden; }
 
-/* ---- sidebar ---- */
-[data-testid="stSidebar"] {
-    background: #0f172a;
-    border-right: 1px solid #1e293b;
-}
-[data-testid="stSidebar"] * { color: #cbd5e1 !important; }
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 { color: #f1f5f9 !important; }
-
-/* ---- main background ---- */
+/* ── App Canvas ── */
 [data-testid="stAppViewContainer"] {
-    background: #0f172a;
+    background: radial-gradient(circle at 10% 20%, #0d1527 0%, #060a13 90%) !important;
+    color: #e2e8f0;
 }
 [data-testid="block-container"] {
-    padding: 2rem 2.5rem 2rem 2.5rem;
+    padding: 1.5rem 2.2rem 3rem 2.2rem !important;
+    max-width: 100% !important;
 }
 
-/* ---- metric cards ---- */
-[data-testid="metric-container"] {
-    background: #1e293b;
-    border: 1px solid #334155;
+/* ── Sidebar ── */
+[data-testid="stSidebar"] {
+    background: #090f1d !important;
+    border-right: 1px solid #182642 !important;
+}
+[data-testid="stSidebar"] hr {
+    border-color: #182642 !important;
+    margin: 0.8rem 0 !important;
+}
+
+/* ── Brand Logo ── */
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.6rem 0 1rem 0;
+    border-bottom: 1px solid #182642;
+    margin-bottom: 1rem;
+}
+.brand-logo {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
     border-radius: 12px;
-    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 8px 16px -4px rgba(59, 130, 246, 0.4);
+    flex-shrink: 0;
 }
-[data-testid="metric-container"] label {
-    color: #94a3b8 !important;
-    font-size: 0.75rem !important;
-    font-weight: 600 !important;
+.brand-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+.brand-subtitle {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-[data-testid="metric-container"] [data-testid="stMetricValue"] {
-    color: #f1f5f9 !important;
-    font-size: 2rem !important;
-    font-weight: 700 !important;
+    letter-spacing: 0.06em;
+    margin-top: 3px;
 }
 
-/* ---- section headers ---- */
-.section-header {
-    font-size: 1rem;
+/* ── KPI Cards ── */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 1.4rem;
+}
+.kpi-card {
+    background: #0c1426;
+    border: 1px solid #1a2947;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s ease;
+}
+.kpi-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(12, 20, 38, 0.8);
+}
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    opacity: 0.8;
+}
+.kpi-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.kpi-value {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #f8fafc;
+    margin: 0.35rem 0 0.1rem 0;
+    letter-spacing: -0.02em;
+}
+.kpi-sub {
+    font-size: 0.72rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ── Section Titles ── */
+.section-title {
+    font-size: 0.8rem;
     font-weight: 700;
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin: 0 0 0.75rem 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #1e293b;
 }
 
-/* ---- dataframe ---- */
-[data-testid="stDataFrame"] {
-    border-radius: 10px;
-    overflow: hidden;
+/* ── Complaint Card ── */
+.complaint-box {
+    background: #0c1426;
+    border: 1px solid #1a2947;
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem 0.9rem 1.25rem;
+    margin-bottom: 0.4rem;
+    transition: all 0.2s ease;
 }
+.complaint-box:hover {
+    border-color: #3b82f6;
+    background: #0f1930;
+}
+.complaint-text {
+    font-size: 0.94rem;
+    color: #f1f5f9;
+    font-weight: 500;
+    line-height: 1.55;
+    margin: 0.7rem 0;
+}
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+.tag-prio { background: #1e1b4b; color: #a5b4fc; border: 1px solid #312e81; }
+.tag-cat  { background: #0f2447; color: #93c5fd; border: 1px solid #1d4ed8; }
+.tag-dept { background: #064e3b; color: #6ee7b7; border: 1px solid #047857; }
+.tag-lang { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
+.tag-rev-yes { background: #450a0a; color: #fca5a5; border: 1px solid #991b1b; }
+.tag-rev-no  { background: #064e3b; color: #6ee7b7; border: 1px solid #047857; }
 
-/* ---- severity badge helper classes (used in HTML) ---- */
-.badge {
-    display: inline-block;
-    padding: 2px 10px;
+/* ── Live Pulse Indicator ── */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    color: #4ade80;
+    padding: 4px 11px;
     border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
 }
-.sev-1  { background:#14532d; color:#86efac; }
-.sev-2  { background:#713f12; color:#fde68a; }
-.sev-3  { background:#78350f; color:#fcd34d; }
-.sev-4  { background:#7f1d1d; color:#fca5a5; }
-.sev-5  { background:#4c0519; color:#fda4af; }
-.cat-badge { background:#1e293b; color:#e2e8f0; border:1px solid #334155; }
-.dept-badge { background:#0f2447; color:#93c5fd; border:1px solid #1e40af; }
-.review-yes { background:#431407; color:#fca5a5; }
-.review-no  { background:#134e4a; color:#6ee7b7; }
-
-/* ---- complaint card ---- */
-.complaint-card {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 0.6rem;
-    transition: border-color 0.2s;
-}
-.complaint-card:hover { border-color: #475569; }
-.complaint-text {
-    color: #e2e8f0;
-    font-size: 0.9rem;
-    margin: 0.4rem 0 0.6rem 0;
-    line-height: 1.5;
-}
-.complaint-meta {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-.priority-pill {
-    background: #312e81;
-    color: #a5b4fc;
-    border-radius: 6px;
-    padding: 2px 8px;
-    font-size: 0.72rem;
-    font-weight: 700;
-}
-.cluster-pill {
-    background: #1e293b;
-    color: #64748b;
-    border: 1px solid #334155;
-    border-radius: 6px;
-    padding: 2px 8px;
-    font-size: 0.72rem;
-}
-
-/* ---- page title ---- */
-.page-title {
-    font-size: 1.85rem;
-    font-weight: 800;
-    color: #f1f5f9;
-    letter-spacing: -0.02em;
-    margin: 0;
-}
-.page-sub {
-    color: #64748b;
-    font-size: 0.85rem;
-    margin-top: 2px;
-    margin-bottom: 1.5rem;
-}
-.live-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    background: #22c55e;
+.pulse-dot {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    margin-right: 6px;
-    animation: blink 1.4s infinite;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    animation: pulseGlow 1.8s infinite;
 }
-@keyframes blink {
-    0%,100%{opacity:1} 50%{opacity:0.3}
+@keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.85); }
 }
-</style>
-""", unsafe_allow_html=True)
+
+/* ── Tabs Styling ── */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: transparent;
+    border-bottom: 1px solid #1a2947;
+    padding-bottom: 4px;
+    margin-bottom: 1.2rem;
+}
+.stTabs [data-baseweb="tab"] {
+    background: #0c1426;
+    border: 1px solid #1a2947;
+    border-radius: 10px;
+    color: #94a3b8;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+.stTabs [data-baseweb="tab"]:hover {
+    color: #f8fafc;
+    border-color: #3b82f6;
+}
+.stTabs [aria-selected="true"] {
+    background: #1e3a8a !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* ── Streamlit Form Controls ── */
+[data-testid="stTextInput"] input {
+    background: #0c1426 !important;
+    border: 1px solid #1a2947 !important;
+    border-radius: 10px !important;
+    color: #f1f5f9 !important;
+}
+[data-testid="stTextInput"] input:focus {
+    border-color: #3b82f6 !important;
+}
+</style>""", unsafe_allow_html=True)
 
 
-# ── Data ──────────────────────────────────────────────────────────────────────
-if "custom_complaints" not in st.session_state:
-    st.session_state["custom_complaints"] = []
-
+# ── Data Loading & Fallback Safety ───────────────────────────────────────────
 @st.cache_data
-def load():
-    with open("data/results.json") as f:
-        raw = json.load(f)
-    return raw
+def load_data():
+    results_path = PROJECT_ROOT / "data" / "results.json"
+    if not results_path.exists():
+        st.error(f"Cannot find {results_path}")
+        return pd.DataFrame()
 
-raw_data = st.session_state["custom_complaints"] + load()
-df = pd.DataFrame(raw_data)
-sizes = df[df.cluster_id >= 0].groupby("cluster_id").size()
-df["reports"] = df.cluster_id.map(sizes).fillna(1).astype(int)
-df["priority"] = df.severity * 10 + df.reports * 3
+    with open(results_path, "r", encoding="utf-8") as f:
+        records = json.load(f)
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
+    df = pd.DataFrame(records)
+
+    # Normalize column names across various teammate conventions
+    if "urgency" in df.columns and "severity" not in df.columns:
+        u_map = {"critical": 5, "high": 4, "medium": 3, "low": 2}
+        df["severity"] = df["urgency"].map(u_map).fillna(3).astype(int)
+    if "severity" not in df.columns:
+        df["severity"] = 3
+    if "cluster_id" not in df.columns:
+        df["cluster_id"] = -1
+    if "needs_human_review" not in df.columns:
+        df["needs_human_review"] = False
+    if "language" not in df.columns:
+        df["language"] = "en"
+    if "department" not in df.columns:
+        df["department"] = "other"
+    if "confidence" not in df.columns:
+        df["confidence"] = 0.88
+
+    # Calculate cluster sizes (reports count)
+    valid_clusters = df[df.cluster_id >= 0]
+    sizes = valid_clusters.groupby("cluster_id").size() if not valid_clusters.empty else pd.Series(dtype=int)
+    df["reports"] = df.cluster_id.map(sizes).fillna(1).astype(int)
+
+    # Priority Score Formula: Severity * 10 + Duplicate Reports * 3
+    df["priority"] = (df["severity"] * 10) + (df["reports"] * 3)
+
+    return df
+
+
+df_all = load_data()
+if df_all.empty:
+    st.stop()
+
+# ── Color Definitions ─────────────────────────────────────────────────────────
+SEV_MAP = {
+    1: {"name": "Cosmetic", "bg": "#064e3b", "color": "#6ee7b7", "rgb": [34, 197, 94]},
+    2: {"name": "Minor", "bg": "#713f12", "color": "#fde68a", "rgb": [234, 179, 8]},
+    3: {"name": "Inconvenient", "bg": "#78350f", "color": "#fcd34d", "rgb": [202, 138, 4]},
+    4: {"name": "Serious Hazard", "bg": "#7f1d1d", "color": "#fca5a5", "rgb": [239, 68, 68]},
+    5: {"name": "Critical Danger", "bg": "#4c0519", "color": "#fda4af", "rgb": [153, 27, 27]},
+}
+
+LANG_FLAGS = {
+    "en": "🇬🇧 English",
+    "hi": "🇮🇳 Hindi",
+    "mr": "🚩 Marathi",
+    "hinglish": "🔀 Hinglish",
+    "other": "🌐 Other",
+}
+
+# ── Sidebar Navigation & Filters ──────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🏙️ CivicSort")
+    # App Logo
+    st.markdown("""<div class="brand-container">
+<div class="brand-logo">🏙️</div>
+<div>
+<div class="brand-title">CivicSort</div>
+<div class="brand-subtitle">Pune Municipal Corporation</div>
+</div>
+</div>""", unsafe_allow_html=True)
+
+    st.markdown("""<div style="margin-bottom: 1rem;">
+<span class="status-pill"><span class="pulse-dot"></span>PMC Ward Live Engine</span>
+</div>""", unsafe_allow_html=True)
+
+    st.markdown("### 🎛️ Intelligent Filters")
+
+    # Search Box
+    search_query = st.text_input(
+        "Search complaints",
+        placeholder="Search keywords (e.g., 'gaddha', 'leak')...",
+        label_visibility="collapsed",
+    )
+
+    # Language Filter
+    available_langs = sorted(df_all["language"].unique())
+    lang_labels = [LANG_FLAGS.get(l, l) for l in available_langs]
+    selected_lang_labels = st.multiselect(
+        "🌐 Language",
+        options=lang_labels,
+        default=lang_labels,
+    )
+    selected_langs = [l for l in available_langs if LANG_FLAGS.get(l, l) in selected_lang_labels]
+
+    # Category Filter
+    all_categories = sorted(df_all["category"].unique())
+    cat_display_map = {c: c.replace("_", " ").title() for c in all_categories}
+    selected_cats = st.multiselect(
+        "📂 Category",
+        options=all_categories,
+        default=all_categories,
+        format_func=lambda c: cat_display_map.get(c, c),
+    )
+
+    # Department Filter
+    all_depts = sorted(df_all["department"].unique())
+    selected_depts = st.multiselect(
+        "🏛️ Department",
+        options=all_depts,
+        default=all_depts,
+        format_func=lambda d: d.replace("_", " ").title(),
+    )
+
+    # Severity Slider
     st.markdown("---")
-    st.markdown("### Filters")
+    min_severity = st.slider("⚡ Minimum Severity Level", 1, 5, 1)
 
-    all_cats = sorted(df.category.unique())
-    cats = st.multiselect("Category", all_cats, default=all_cats)
-
-    all_depts = sorted(df.department.unique())
-    depts = st.multiselect("Department", all_depts, default=all_depts)
-
-    min_sev = st.slider("Min severity", 1, 5, 1)
-    show_review = st.checkbox("Only needs review", value=False)
+    # Operational Toggles
+    st.markdown("### 🎯 Quick Filters")
+    flag_review = st.toggle("⚠️ Only Needs Human Review", value=False)
+    flag_duplicates = st.toggle("🔗 Only Duplicate Clusters", value=False)
+    flag_unresolved = st.toggle("⏳ Only Pending Dispatches", value=False)
 
     st.markdown("---")
-    st.markdown("### Legend — Severity")
-    for label, colour in [
-        ("1 – Cosmetic",     "#22c55e"),
-        ("2 – Minor",        "#eab308"),
-        ("3 – Inconvenient", "#ca8a04"),
-        ("4 – Serious",      "#ef4444"),
-        ("5 – Danger",       "#991b1b"),
-    ]:
+    # Severity Legend
+    st.markdown("### 🎨 Severity Legend")
+    for sev_num, info in SEV_MAP.items():
         st.markdown(
-            f'<span style="color:{colour};font-weight:700">●</span> {label}',
+            f"""<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+<div style="width:12px;height:12px;border-radius:4px;background:{info["color"]};"></div>
+<span style="font-size:0.78rem;color:#cbd5e1;font-weight:600;">Level {sev_num} — {info["name"]}</span>
+</div>""",
             unsafe_allow_html=True,
         )
 
-# ── Filter ────────────────────────────────────────────────────────────────────
+    st.markdown("---")
+    st.caption("CivicSort AI Pipeline · Multilingual Triage · PMC Demo 2026")
+
+
+# ── Filter Data ───────────────────────────────────────────────────────────────
 mask = (
-    df.category.isin(cats)
-    & df.department.isin(depts)
-    & (df.severity >= min_sev)
-)
-if show_review:
-    mask = mask & df.needs_human_review
-view = df[mask].sort_values("priority", ascending=False)
-
-# ── Header ────────────────────────────────────────────────────────────────────
-st.markdown(
-    '<p class="page-title">Civic Complaint Triage Dashboard</p>'
-    '<p class="page-sub"><span class="live-dot"></span>Live · Pune Municipal Corporation · Ward 12</p>',
-    unsafe_allow_html=True,
+    df_all["language"].isin(selected_langs)
+    & df_all["category"].isin(selected_cats)
+    & df_all["department"].isin(selected_depts)
+    & (df_all["severity"] >= min_severity)
 )
 
-# ── Live Triage Interactive Demo ──────────────────────────────────────────────
-with st.expander("✨ Test Live Citizen Complaint Intake (Marathi / Hindi / Hinglish / English)", expanded=False):
-    c_col1, c_col2 = st.columns([3, 2])
-    with c_col1:
-        sample_pick = st.selectbox(
-            "Or pick a pre-built example:",
-            [
-                "-- Write custom complaint below --",
-                "Pipe phat gayi hai Shivaji Chowk ke paas, poori road par paani bhar gaya hai",
-                "रस्त्यावर मोठा खड्डा आहे, काल एक बाईक घसरली",
-                "पार्कच्या प्रवेशद्वाराची स्ट्रीट लाईट बंद आहे, रात्री अपघात होऊ शकतो",
-                "Hospital ke samne open garbage dher hai, foul smell spreading everywhere",
-                "Footpath pe open manhole cover nahi hai, bachche gir sakte hain",
-            ],
-        )
-        default_val = "" if sample_pick.startswith("--") else sample_pick
-        user_complaint = st.text_area(
-            "Citizen Complaint:",
-            value=default_val,
-            placeholder="Type complaint in Hindi, Marathi, Hinglish, or English...",
-            height=100,
-        )
+if search_query.strip():
+    mask = mask & df_all["text"].str.contains(search_query.strip(), case=False, na=False)
 
-    with c_col2:
-        st.markdown("**Photo Evidence (Optional)**")
-        ref_photo = st.selectbox(
-            "Select reference photo:",
-            [
-                "None",
-                "water-leak.jpg",
-                "pothole.jpg",
-                "garbage.jpg",
-                "blocked-drain.jpg",
-                "streetlight.jpg",
-                "fallen-tree.jpg",
-            ],
-        )
-        if ref_photo != "None":
-            st.image(f"data/photos/{ref_photo}", width=180)
+if flag_review:
+    mask = mask & df_all["needs_human_review"]
 
-    if st.button("🚀 Triage & Route with Gemma 4", type="primary"):
-        if not user_complaint.strip():
-            st.warning("Please enter a complaint description.")
-        else:
-            with st.spinner("Classifying with Gemma 4 local model..."):
-                try:
-                    from backend.triage import triage_complaint
+if flag_duplicates:
+    mask = mask & (df_all["cluster_id"] >= 0) & (df_all["reports"] > 1)
 
-                    p_path = f"data/photos/{ref_photo}" if ref_photo != "None" else None
-                    res = triage_complaint(user_complaint, photo_path=p_path)
+filtered_df = df_all[mask].copy()
 
-                    sev_map = {"critical": 5, "high": 4, "medium": 3, "low": 1}
-                    urg = res.get("urgency", "medium")
-                    sev_num = sev_map.get(urg, 3)
+if flag_unresolved:
+    filtered_df = filtered_df[~filtered_df["id"].isin(st.session_state.resolved_ids)]
 
-                    new_item = {
-                        "id": f"LIVE-{len(raw_data) + 1:03d}",
-                        "text": user_complaint,
-                        "language": "multilingual",
-                        "ward": "Ward-12",
-                        "category": res.get("category", "other"),
-                        "department": res.get("department", "Sanitation"),
-                        "severity": sev_num,
-                        "urgency": urg,
-                        "severity_reason": res.get("urgency_reason", "Real-time AI triage."),
-                        "needs_human_review": (res.get("category") == "other" or sev_num == 5),
-                        "confidence": 0.95,
-                        "cluster_id": -1,
-                        "duplicate_group": None,
-                        "lat": 18.5204 + (len(st.session_state["custom_complaints"]) * 0.001),
-                        "lng": 73.8567 + (len(st.session_state["custom_complaints"]) * 0.001),
-                        "location_hint": res.get("location", "Ward-12, Pune"),
-                        "photo_path": p_path,
-                    }
-                    st.session_state["custom_complaints"].insert(0, new_item)
-                    st.success(f"✅ Routed to **{res.get('department')}** · Category: **{res.get('category')}** · Urgency: **{urg.upper()}**")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Triage error: {e}")
 
-# ── KPI row ───────────────────────────────────────────────────────────────────
-k1, k2, k3, k4, k5 = st.columns(5)
-k1.metric("📋 Complaints", len(view))
-k2.metric("🔗 Issue Groups", int(view[view.cluster_id >= 0].cluster_id.nunique()))
-k3.metric("🔴 Needs Review", int(view.needs_human_review.sum()))
-k4.metric("⚡ High Severity (4-5)", int((view.severity >= 4).sum()))
-k5.metric("📍 Avg Severity", f"{view.severity.mean():.1f}" if len(view) else "—")
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# ── Charts row ────────────────────────────────────────────────────────────────
-ch1, ch2, ch3 = st.columns(3)
-
-CHART_CFG = dict(
-    background="#1e293b",
-    axisX=dict(
-        labelColor="#94a3b8", labelFontSize=11, labelAngle=0,
-        tickColor="#334155", gridColor="#334155", domainColor="#334155",
-        titleColor="#64748b",
-    ),
-    axisY=dict(
-        labelColor="#94a3b8", labelFontSize=11,
-        gridColor="#1e293b", domainColor="#334155",
-        tickColor="#334155", titleColor="#64748b",
-    ),
-    view=dict(stroke="transparent"),
-)
-
-with ch1:
-    st.markdown('<p class="section-header">Complaints by Category</p>', unsafe_allow_html=True)
-    cat_df = (
-        view.category
-        .value_counts()
-        .rename_axis("category")
-        .reset_index(name="count")
-    )
-    # shorten labels
-    cat_df["label"] = cat_df["category"].str.replace("_", " ").str.title()
-    chart = (
-        alt.Chart(cat_df)
-        .mark_bar(color="#6366f1", cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
-        .encode(
-            x=alt.X("label:N", sort="-y", title=None,
-                    axis=alt.Axis(labelAngle=0, labelLimit=90, labelFontSize=11)),
-            y=alt.Y("count:Q", title="count",
-                    axis=alt.Axis(tickMinStep=1)),
-            tooltip=["label:N", "count:Q"],
-        )
-        .properties(height=190)
-        .configure(**CHART_CFG)
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-with ch2:
-    st.markdown('<p class="section-header">Severity Distribution</p>', unsafe_allow_html=True)
-    SEV_COLORS = {1:"#6ee7b7", 2:"#93c5fd", 3:"#fcd34d", 4:"#fca5a5", 5:"#fda4af"}
-    sev_df = (
-        view.severity
-        .value_counts()
-        .sort_index()
-        .rename_axis("severity")
-        .reset_index(name="count")
-    )
-    sev_df["label"] = sev_df["severity"].map(
-        {1:"1 – Cosmetic", 2:"2 – Minor", 3:"3 – Inconvenient",
-         4:"4 – Serious", 5:"5 – Danger"}
-    )
-    sev_df["color"] = sev_df["severity"].map(SEV_COLORS)
-    chart = (
-        alt.Chart(sev_df)
-        .mark_bar(cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
-        .encode(
-            x=alt.X("label:N", sort=None, title=None,
-                    axis=alt.Axis(labelAngle=0, labelLimit=110, labelFontSize=11)),
-            y=alt.Y("count:Q", title="count",
-                    axis=alt.Axis(tickMinStep=1)),
-            color=alt.Color("color:N", scale=None, legend=None),
-            tooltip=["label:N", "count:Q"],
-        )
-        .properties(height=190)
-        .configure(**CHART_CFG)
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-with ch3:
-    st.markdown('<p class="section-header">Department Load</p>', unsafe_allow_html=True)
-    dept_df = (
-        view.department
-        .value_counts()
-        .rename_axis("department")
-        .reset_index(name="count")
-    )
-    dept_df["label"] = dept_df["department"].str.replace("_", " ").str.title()
-    chart = (
-        alt.Chart(dept_df)
-        .mark_bar(color="#10b981", cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
-        .encode(
-            x=alt.X("label:N", sort="-y", title=None,
-                    axis=alt.Axis(labelAngle=0, labelLimit=90, labelFontSize=11)),
-            y=alt.Y("count:Q", title="count",
-                    axis=alt.Axis(tickMinStep=1)),
-            tooltip=["label:N", "count:Q"],
-        )
-        .properties(height=190)
-        .configure(**CHART_CFG)
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# ── Main panel: cards + map ───────────────────────────────────────────────────
-SEV_COLOUR = {1: "#86efac", 2: "#fde68a", 3: "#fcd34d", 4: "#fca5a5", 5: "#fda4af"}
-SEV_BG     = {1: "#14532d", 2: "#713f12", 3: "#78350f", 4: "#7f1d1d", 5: "#4c0519"}
-
-left, right = st.columns([3, 2], gap="large")
-
-with left:
-    st.markdown(
-        f'<p class="section-header">Ranked Queue &nbsp;·&nbsp; {len(view)} complaints</p>',
-        unsafe_allow_html=True,
-    )
-
-    for _, row in view.iterrows():
-        sc = SEV_COLOUR.get(row.severity, "#94a3b8")
-        sb = SEV_BG.get(row.severity, "#1e293b")
-        review_tag = (
-            '<span class="badge review-yes">⚠ Review</span>'
-            if row.needs_human_review
-            else '<span class="badge review-no">✓ Auto</span>'
-        )
-        cluster_tag = (
-            f'<span class="cluster-pill">Group #{int(row.cluster_id)} · {int(row.reports)} reports</span>'
-            if row.cluster_id >= 0
-            else '<span class="cluster-pill">Unique</span>'
-        )
-        photo_tag = (
-            '<span class="badge" style="background:#0369a1;color:#bae6fd">📷 Photo</span>'
-            if ("photo_path" in row and row.photo_path and str(row.photo_path) not in ["nan", "None"])
-            else ""
-        )
-        st.markdown(f"""
-<div class="complaint-card">
-  <div class="complaint-meta">
-    <span class="priority-pill">P {int(row.priority)}</span>
-    <span class="badge" style="background:{sb};color:{sc}">Sev {int(row.severity)}</span>
-    <span class="badge cat-badge">{row.category.replace('_',' ').title()}</span>
-    <span class="badge dept-badge">{row.department.replace('_',' ').title()}</span>
-    {review_tag}
-    {cluster_tag}
-    {photo_tag}
-  </div>
-  <p class="complaint-text">{row.text}</p>
-  <div style="font-size:0.72rem;color:#475569">
-    ID {row.id} &nbsp;·&nbsp; {row.language.upper()}
-    {'&nbsp;·&nbsp; 📍 ' + str(row.location_hint) if 'location_hint' in row and row.location_hint and str(row.location_hint) != 'nan' else ''}
-  </div>
+# ── Header Banner ─────────────────────────────────────────────────────────────
+header_col1, header_col2 = st.columns([3, 1])
+with header_col1:
+    st.markdown("""<div style="display:flex;align-items:center;gap:12px;margin-bottom:0.2rem;">
+<h1 style="font-size:2.1rem;font-weight:900;color:#ffffff;letter-spacing:-0.03em;margin:0;">
+Civic Complaint Triage & Dispatch
+</h1>
 </div>
-""", unsafe_allow_html=True)
+<p style="color:#94a3b8;font-size:0.88rem;margin:0 0 1.2rem 0;">
+Automated multilingual complaint routing, severity scoring, and duplicate clustering for Pune Municipal Corporation.
+</p>""", unsafe_allow_html=True)
 
-with right:
-    st.markdown('<p class="section-header">Complaint Map · Pune</p>', unsafe_allow_html=True)
+with header_col2:
+    st.markdown("<div style='text-align:right;'>", unsafe_allow_html=True)
+    if st.button("🔄 Reset All Filters", width="stretch"):
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # severity colours: 1=green 2=yellow 3=dark-yellow 4=red 5=dark-red
-    SEV_RGB = {
-        1: [34,  197, 94],    # green
-        2: [234, 179, 8],     # yellow
-        3: [202, 138, 4],     # dark yellow
-        4: [239, 68,  68],    # red
-        5: [153, 27,  27],    # dark red
+
+# ── 2 Main Tabs (Live AI Triage removed completely) ───────────────────────────
+tab_ops, tab_clusters = st.tabs([
+    "📊 Ward Operations Center",
+    "🔗 Duplicate Cluster Analytics",
+])
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 1: OPERATIONS CENTER
+# ══════════════════════════════════════════════════════════════════════════════
+with tab_ops:
+    # ── KPI Cards ─────────────────────────────────────────────────────────────
+    n_complaints = len(filtered_df)
+    n_groups = int(filtered_df[filtered_df.cluster_id >= 0]["cluster_id"].nunique())
+    n_critical = int((filtered_df.severity >= 4).sum())
+    n_review = int(filtered_df.needs_human_review.sum())
+    avg_confidence = f"{filtered_df['confidence'].mean() * 100:.0f}%" if n_complaints > 0 else "N/A"
+
+    kpi_html = f"""<div class="kpi-grid">
+<div class="kpi-card">
+<div class="kpi-title">📋 Active Queue</div>
+<div class="kpi-value">{n_complaints}</div>
+<div class="kpi-sub">{len(st.session_state.resolved_ids)} resolved in session</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-title">🔗 Duplicate Groups</div>
+<div class="kpi-value">{n_groups}</div>
+<div class="kpi-sub">Clustered by bge-m3 + HDBSCAN</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-title">⚡ Severe Hazards</div>
+<div class="kpi-value" style="color:#f87171;">{n_critical}</div>
+<div class="kpi-sub">Priority 4 & 5 immediate danger</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-title">👁️ Human Review</div>
+<div class="kpi-value" style="color:#fbbf24;">{n_review}</div>
+<div class="kpi-sub">Ambiguous or mixed input</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-title">🎯 AI Confidence</div>
+<div class="kpi-value" style="color:#38bdf8;">{avg_confidence}</div>
+<div class="kpi-sub">Mean semantic certainty</div>
+</div>
+</div>"""
+    st.markdown(kpi_html, unsafe_allow_html=True)
+
+    # ── Charts Row ────────────────────────────────────────────────────────────
+    st.markdown('<div class="section-title">📈 Real-time Analytics</div>', unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+
+    chart_theme = {
+        "background": "#0c1426",
+        "axisX": {
+            "labelColor": "#94a3b8", "labelFontSize": 11, "labelAngle": 0,
+            "tickColor": "#1a2947", "gridColor": "#0c1426", "domainColor": "#1a2947",
+            "titleColor": "#64748b"
+        },
+        "axisY": {
+            "labelColor": "#94a3b8", "labelFontSize": 10,
+            "gridColor": "#162238", "domainColor": "#1a2947",
+            "tickColor": "#1a2947", "titleColor": "#64748b"
+        },
+        "view": {"stroke": "transparent"},
     }
-    map_df = view.rename(columns={"lng": "lon"})[
-        ["lat", "lon", "severity", "category", "text"]
-    ].dropna().copy()
-    map_df["color"]  = map_df["severity"].map(SEV_RGB)
-    map_df["radius"] = map_df["severity"] * 90
 
-    layer = pdk.Layer(
-        "ScatterplotLayer",
-        data=map_df,
-        get_position="[lon, lat]",
-        get_fill_color="color",
-        get_line_color=[255, 255, 255, 60],
-        get_radius="radius",
-        radius_min_pixels=7,
-        radius_max_pixels=24,
-        stroked=True,
-        line_width_min_pixels=1,
-        pickable=True,
-        opacity=0.9,
-    )
-    view_state = pdk.ViewState(
-        latitude=map_df["lat"].mean(),
-        longitude=map_df["lon"].mean(),
-        zoom=11,
-        pitch=0,
-    )
-    tooltip = {
-        "html": (
-            "<div style='font-family:Inter,sans-serif;font-size:12px;"
-            "background:#1e293b;color:#e2e8f0;padding:8px 12px;"
-            "border-radius:8px;border:1px solid #334155'>"
-            "<b style='color:#a5b4fc'>{category}</b><br/>"
-            "{text}<br/>"
-            "<span style='color:#94a3b8'>Severity {severity}</span>"
-            "</div>"
-        ),
-        "style": {"backgroundColor": "transparent", "border": "none"},
-    }
-    st.pydeck_chart(
-        pdk.Deck(
-            layers=[layer],
-            initial_view_state=view_state,
-            tooltip=tooltip,
-            # CARTO dark-matter — free, no Mapbox token needed
-            map_style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
-        ),
-        use_container_width=True,
-        height=400,
-    )
+    with c1:
+        st.caption("**Complaints by Category**")
+        if not filtered_df.empty:
+            cat_counts = filtered_df["category"].value_counts().reset_index()
+            cat_counts.columns = ["category", "count"]
+            cat_counts["label"] = cat_counts["category"].str.replace("_", " ").str.title()
+            ch_cat = (
+                alt.Chart(cat_counts)
+                .mark_bar(color="#3b82f6", cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
+                .encode(
+                    x=alt.X("label:N", sort="-y", title=None, axis=alt.Axis(labelAngle=0, labelLimit=85)),
+                    y=alt.Y("count:Q", title=None, axis=alt.Axis(tickMinStep=1)),
+                    tooltip=["label:N", "count:Q"],
+                )
+                .properties(height=170)
+                .configure(**chart_theme)
+            )
+            st.altair_chart(ch_cat, width="stretch")
+        else:
+            st.info("No data")
+
+    with c2:
+        st.caption("**Severity Distribution**")
+        if not filtered_df.empty:
+            sev_counts = filtered_df["severity"].value_counts().sort_index().reset_index()
+            sev_counts.columns = ["severity", "count"]
+            sev_counts["color"] = sev_counts["severity"].map(lambda s: SEV_MAP.get(s, {}).get("color", "#94a3b8"))
+            sev_counts["name"] = sev_counts["severity"].map(lambda s: f"L{s} {SEV_MAP.get(s, {}).get('name', '')}")
+            ch_sev = (
+                alt.Chart(sev_counts)
+                .mark_bar(cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
+                .encode(
+                    x=alt.X("name:N", sort=None, title=None, axis=alt.Axis(labelAngle=0, labelLimit=90)),
+                    y=alt.Y("count:Q", title=None, axis=alt.Axis(tickMinStep=1)),
+                    color=alt.Color("color:N", scale=None),
+                    tooltip=["name:N", "count:Q"],
+                )
+                .properties(height=170)
+                .configure(**chart_theme)
+            )
+            st.altair_chart(ch_sev, width="stretch")
+        else:
+            st.info("No data")
+
+    with c3:
+        st.caption("**Departmental Workload**")
+        if not filtered_df.empty:
+            dept_counts = filtered_df["department"].value_counts().reset_index()
+            dept_counts.columns = ["department", "count"]
+            dept_counts["label"] = dept_counts["department"].str.replace("_", " ").str.title()
+            ch_dept = (
+                alt.Chart(dept_counts)
+                .mark_bar(color="#10b981", cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
+                .encode(
+                    x=alt.X("label:N", sort="-y", title=None, axis=alt.Axis(labelAngle=0, labelLimit=85)),
+                    y=alt.Y("count:Q", title=None, axis=alt.Axis(tickMinStep=1)),
+                    tooltip=["label:N", "count:Q"],
+                )
+                .properties(height=170)
+                .configure(**chart_theme)
+            )
+            st.altair_chart(ch_dept, width="stretch")
+        else:
+            st.info("No data")
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<p class="section-header">Top Duplicate Groups</p>', unsafe_allow_html=True)
 
-    groups = (
-        view[view.cluster_id >= 0]
-        .groupby("cluster_id")
-        .agg(reports=("id", "count"), category=("category", "first"),
-             severity=("severity", "max"), department=("department", "first"))
-        .sort_values(["reports", "severity"], ascending=False)
-        .head(8)
-        .reset_index()
-    )
-    for _, g in groups.iterrows():
-        sc = SEV_COLOUR.get(g.severity, "#94a3b8")
-        sb = SEV_BG.get(g.severity, "#1e293b")
-        st.markdown(f"""
-<div class="complaint-card" style="padding:0.75rem 1rem;">
-  <div class="complaint-meta">
-    <span style="font-weight:700;color:#a5b4fc">Group #{int(g.cluster_id)}</span>
-    <span class="badge cat-badge">{g.category.replace('_',' ').title()}</span>
-    <span class="badge" style="background:{sb};color:{sc}">Sev {int(g.severity)}</span>
-  </div>
-  <div style="color:#94a3b8;font-size:0.8rem;margin-top:4px">
-    {int(g.reports)} reports &nbsp;·&nbsp; {g.department.replace('_',' ').title()}
-  </div>
+    # ── Main Two-Column Layout ────────────────────────────────────────────────
+    col_queue, col_map = st.columns([3, 2], gap="large")
+
+    with col_queue:
+        # Sorting Controls
+        sub_c1, sub_c2 = st.columns([2, 1])
+        with sub_c1:
+            st.markdown(f'<div class="section-title">📋 Priority Queue ({len(filtered_df)} items)</div>', unsafe_allow_html=True)
+        with sub_c2:
+            sort_opt = st.selectbox(
+                "Sort",
+                ["Priority (High → Low)", "Severity (High → Low)", "Reports Count", "Newest"],
+                label_visibility="collapsed",
+            )
+
+        # Apply Sort
+        if sort_opt == "Priority (High → Low)":
+            display_df = filtered_df.sort_values("priority", ascending=False)
+        elif sort_opt == "Severity (High → Low)":
+            display_df = filtered_df.sort_values(["severity", "priority"], ascending=False)
+        elif sort_opt == "Reports Count":
+            display_df = filtered_df.sort_values("reports", ascending=False)
+        else:
+            display_df = filtered_df
+
+        if display_df.empty:
+            st.info("No complaints match your active filter criteria.")
+        else:
+            for _, row in display_df.iterrows():
+                cid = row["id"]
+                is_resolved = cid in st.session_state.resolved_ids
+                is_dispatched = cid in st.session_state.dispatched_ids
+
+                sev_val = int(row["severity"])
+                sev_info = SEV_MAP.get(sev_val, SEV_MAP[3])
+                cat_name = str(row["category"]).replace("_", " ").title()
+                dept_name = str(row["department"]).replace("_", " ").title()
+                lang_tag = LANG_FLAGS.get(str(row["language"]), str(row["language"]))
+
+                cluster_badge = (
+                    f'<span class="tag" style="background:#1e1b4b;color:#c7d2fe;border:1px solid #4338ca;">🔗 Group #{int(row["cluster_id"])} ({int(row["reports"])} reports)</span>'
+                    if row["cluster_id"] >= 0 and row["reports"] > 1
+                    else '<span class="tag" style="background:#0f172a;color:#64748b;border:1px solid #1e293b;">Single Report</span>'
+                )
+
+                review_badge = (
+                    '<span class="tag tag-rev-yes">⚠️ Needs Review</span>'
+                    if row["needs_human_review"]
+                    else '<span class="tag tag-rev-no">✓ Auto-Approved</span>'
+                )
+
+                status_label = ""
+                if is_resolved:
+                    status_label = '<span class="tag" style="background:#064e3b;color:#a7f3d0;border:1px solid #059669;">✅ RESOLVED</span>'
+                elif is_dispatched:
+                    status_label = '<span class="tag" style="background:#1e3a8a;color:#93c5fd;border:1px solid #2563eb;">🚀 CREW DISPATCHED</span>'
+
+                # Formatted Card HTML with zero-indent lines to avoid markdown codeblock bugs
+                card_html = f"""<div class="complaint-box" style="{'border-color:#10b981;opacity:0.75;' if is_resolved else ''}">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+<span class="tag tag-prio">Priority {int(row["priority"])}</span>
+<span class="tag" style="background:{sev_info['bg']};color:{sev_info['color']};border:1px solid {sev_info['color']}55;">Level {sev_val} · {sev_info['name']}</span>
+<span class="tag tag-cat">{cat_name}</span>
+<span class="tag tag-dept">{dept_name}</span>
+{cluster_badge}
+{review_badge}
+{status_label}
 </div>
-""", unsafe_allow_html=True)
+<span style="font-size:0.75rem;color:#64748b;font-weight:600;">{cid} · {lang_tag}</span>
+</div>
+<div class="complaint-text">{row["text"]}</div>
+<div style="font-size:0.78rem;color:#94a3b8;display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+<span><b style="color:#cbd5e1;">Justification:</b> {row.get("severity_reason", "Assessed by civic model")}</span>
+<span style="color:#64748b;">Confidence: {int(row.get("confidence", 0.85) * 100)}%</span>
+</div>
+</div>"""
+                st.markdown(card_html, unsafe_allow_html=True)
+
+                # Interactive Quick-Action buttons
+                act1, act2, act3 = st.columns([1, 1, 3])
+                with act1:
+                    if not is_dispatched and not is_resolved:
+                        if st.button("🚀 Dispatch", key=f"disp_{cid}"):
+                            st.session_state.dispatched_ids.add(cid)
+                            st.toast(f"Crew dispatched for {cid} ({dept_name})!", icon="🚀")
+                            st.rerun()
+                with act2:
+                    if not is_resolved:
+                        if st.button("✅ Resolve", key=f"res_{cid}"):
+                            st.session_state.resolved_ids.add(cid)
+                            st.toast(f"Complaint {cid} marked as Resolved!", icon="✅")
+                            st.rerun()
+                st.markdown("<div style='margin-bottom:0.4rem;'></div>", unsafe_allow_html=True)
+
+    with col_map:
+        st.markdown('<div class="section-title">🗺️ Geo-Spatial Incident Map · Pune</div>', unsafe_allow_html=True)
+
+        map_data = filtered_df.rename(columns={"lng": "lon"})[["lat", "lon", "severity", "category", "text", "id"]].dropna().copy()
+
+        if not map_data.empty:
+            map_data["color"] = map_data["severity"].map(lambda s: SEV_MAP.get(int(s), {}).get("rgb", [234, 179, 8]))
+            map_data["radius"] = map_data["severity"].map(lambda s: 120 + (int(s) * 60))
+
+            layer = pdk.Layer(
+                "ScatterplotLayer",
+                data=map_data,
+                get_position="[lon, lat]",
+                get_fill_color="color",
+                get_line_color=[255, 255, 255, 80],
+                get_radius="radius",
+                radius_min_pixels=8,
+                radius_max_pixels=28,
+                stroked=True,
+                line_width_min_pixels=1.5,
+                pickable=True,
+                opacity=0.88,
+            )
+
+            view_state = pdk.ViewState(
+                latitude=float(map_data["lat"].mean()),
+                longitude=float(map_data["lon"].mean()),
+                zoom=11.2,
+                pitch=20,
+            )
+
+            map_tooltip = {
+                "html": (
+                    "<div style='font-family:Plus Jakarta Sans,sans-serif;font-size:12px;"
+                    "background:#090f1d;color:#e2e8f0;padding:10px 14px;border-radius:10px;"
+                    "border:1px solid #1a2947;box-shadow:0 8px 20px rgba(0,0,0,0.7);max-width:260px;'>"
+                    "<div style='color:#38bdf8;font-weight:700;margin-bottom:3px;'>{id} · {category}</div>"
+                    "<div style='margin-bottom:6px;line-height:1.4;'>{text}</div>"
+                    "<div style='color:#f87171;font-weight:700;'>Severity Level: {severity}</div>"
+                    "</div>"
+                ),
+                "style": {"backgroundColor": "transparent", "border": "none"},
+            }
+
+            st.pydeck_chart(
+                pdk.Deck(
+                    layers=[layer],
+                    initial_view_state=view_state,
+                    tooltip=map_tooltip,
+                    map_style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+                ),
+                height=380,
+            )
+        else:
+            st.info("No geospatial data for current filters.")
+
+        # Duplicate Groups Spotlight
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown('<div class="section-title">🔗 Top Duplicate Incident Clusters</div>', unsafe_allow_html=True)
+
+        clustered_only = filtered_df[filtered_df.cluster_id >= 0]
+        if not clustered_only.empty:
+            grp_stats = (
+                clustered_only.groupby("cluster_id")
+                .agg(
+                    reports=("id", "count"),
+                    category=("category", "first"),
+                    department=("department", "first"),
+                    max_sev=("severity", "max"),
+                )
+                .sort_values(["reports", "max_sev"], ascending=False)
+                .head(6)
+                .reset_index()
+            )
+
+            for _, g in grp_stats.iterrows():
+                sev_i = SEV_MAP.get(int(g["max_sev"]), SEV_MAP[3])
+                cat_n = str(g["category"]).replace("_", " ").title()
+                dept_n = str(g["department"]).replace("_", " ").title()
+
+                group_html = f"""<div style="background:#0c1426;border:1px solid #1a2947;border-radius:10px;padding:0.75rem 1rem;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;">
+<div>
+<div style="display:flex;align-items:center;gap:6px;">
+<span style="font-weight:800;color:#818cf8;font-size:0.85rem;">Group #{int(g["cluster_id"])}</span>
+<span class="tag tag-cat">{cat_n}</span>
+<span class="tag tag-dept">{dept_n}</span>
+</div>
+<div style="color:#64748b;font-size:0.75rem;margin-top:3px;">
+Municipal savings: merged {int(g["reports"])} tickets into 1 crew dispatch
+</div>
+</div>
+<div style="text-align:right;">
+<div style="font-size:1.15rem;font-weight:800;color:#38bdf8;">{int(g["reports"])}×</div>
+<span style="font-size:0.7rem;color:{sev_i['color']};font-weight:700;">Sev {int(g['max_sev'])}</span>
+</div>
+</div>"""
+                st.markdown(group_html, unsafe_allow_html=True)
+        else:
+            st.caption("No multi-report clusters found in current filter.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 2: DUPLICATE CLUSTER DEEP-DIVE
+# ══════════════════════════════════════════════════════════════════════════════
+with tab_clusters:
+    st.markdown("""<div style="margin-bottom:1.2rem;">
+<h3 style="font-size:1.3rem;font-weight:800;color:#ffffff;margin:0 0 0.3rem 0;">
+🔗 bge-m3 + HDBSCAN Semantic Deduplication
+</h3>
+<p style="color:#94a3b8;font-size:0.85rem;margin:0;">
+How our multilingual embeddings merge separate citizen reports about the same incident into a single unified ticket.
+</p>
+</div>""", unsafe_allow_html=True)
+
+    c_clusters = df_all[df_all.cluster_id >= 0]["cluster_id"].unique()
+    if len(c_clusters) > 0:
+        for cid in sorted(c_clusters):
+            group_items = df_all[df_all.cluster_id == cid]
+            if len(group_items) < 2:
+                continue
+
+            first = group_items.iloc[0]
+            cat_n = str(first["category"]).replace("_", " ").title()
+            dept_n = str(first["department"]).replace("_", " ").title()
+
+            st.markdown(f"""<div style="background:#0c1426;border:1px solid #1a2947;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
+<div style="display:flex;align-items:center;gap:8px;">
+<span style="font-weight:800;color:#818cf8;font-size:1rem;">Cluster #{cid}</span>
+<span class="tag tag-cat">{cat_n}</span>
+<span class="tag tag-dept">{dept_n}</span>
+</div>
+<span style="font-size:0.85rem;color:#38bdf8;font-weight:700;">{len(group_items)} Citizen Reports Merged</span>
+</div>""", unsafe_allow_html=True)
+
+            for _, item in group_items.iterrows():
+                lang_tag = LANG_FLAGS.get(str(item["language"]), str(item["language"]))
+                st.markdown(f"""<div style="background:#080f1e;border-left:3px solid #3b82f6;padding:8px 12px;margin:5px 0;border-radius:4px;">
+<div style="font-size:0.75rem;color:#64748b;margin-bottom:2px;">Report ID: <b>{item['id']}</b> ({lang_tag})</div>
+<div style="color:#cbd5e1;font-size:0.88rem;">"{item['text']}"</div>
+</div>""", unsafe_allow_html=True)
+
+            st.markdown("</div>", unsafe_allow_html=True)
+    else:
+        st.info("Run clustering first using `python -m backend.cluster` to generate semantic clusters.")
