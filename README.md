@@ -24,12 +24,24 @@ Citizen portal → multilingual triage → structured route → duplicate cluste
 
 ## Run locally
 
+### Demo website (primary)
+
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) for the Ward Operations Center and [http://localhost:3000/report](http://localhost:3000/report) for the citizen complaint portal. A submitted report is saved in the browser and appears in the linked operations dashboard.
+
+### Python pipeline and backup dashboard
+
 ```bash
 python3 -m pip install -r requirements.txt
 streamlit run dashboard/app.py
 ```
 
-Open the local address shown by Streamlit. Use the **Report a Civic Issue** page in the sidebar for the citizen portal, and **Ward Operations Center** for the municipal dashboard.
+Open the local address shown by Streamlit. The Streamlit screens remain available as a backup demo for the citizen portal and municipal dashboard.
 
 ### Optional local AI setup
 
@@ -46,8 +58,10 @@ Set `LLM_BACKEND=ollama` and `OLLAMA_MODEL=gemma4:latest` in your environment be
 
 | Path | Purpose |
 |---|---|
-| `dashboard/app.py` | Municipal operations dashboard |
-| `dashboard/pages/1_🗳️_Submit_Complaint.py` | Citizen complaint portal |
+| `frontend/app/page.tsx` | Primary Ward Operations Center website |
+| `frontend/app/report/page.tsx` | Primary citizen complaint website |
+| `dashboard/app.py` | Backup Streamlit operations dashboard |
+| `dashboard/pages/1_🗳️_Submit_Complaint.py` | Backup Streamlit citizen portal |
 | `backend/triage.py` | Structured multilingual complaint routing |
 | `backend/cluster.py` | bge-m3 embeddings and HDBSCAN duplicate clustering |
 | `data/complaints.json` | Labelled benchmark set of 54 complaints |

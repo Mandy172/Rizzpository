@@ -114,7 +114,7 @@ def embed_texts(texts: List[str], use_cache: bool = True) -> np.ndarray:
 
         if ollama_failed:
             print(f"  [Warning] Ollama ({OLLAMA_HOST}) unreachable or '{EMBED_MODEL}' not loaded.")
-            return _fallback_tfidf_embeddings(texts)
+            raise RuntimeError("bge-m3 embeddings unavailable: open Ollama and run: ollama pull bge-m3")
 
         if use_cache:
             _save_cache(cache)
@@ -182,10 +182,24 @@ def cluster_embeddings(
     return np.array(clean_labels, dtype=int)
 
 
+
+def agglomerative_labels(embeddings, min_cluster_size=2, distance_threshold=0.25):
+    """Cosine agglomerative clustering. Singletons become -1 (unique)."""
+    n = len(embeddings)
+    if n < min_cluster_size:
+        return np.full(n, -1, dtype=int)
+    lab = AgglomerativeClustering(
+        n_clusters=None, distance_threshold=distance_threshold,
+        metric="cosine", linkage="average",
+    ).fit_predict(embeddings)
+    sizes = {l: int((lab == l).sum()) for l in set(lab)}
+    return np.array([l if sizes[l] >= min_cluster_size else -1 for l in lab], dtype=int)
+
+
 def cluster_complaints(
     complaints: List[dict],
     min_cluster_size: int = 2,
-    distance_threshold: float = 0.20,
+    distance_threshold: float = 0.25,
 ) -> List[dict]:
     """Cluster reports within their predicted service area and return enriched records.
 
@@ -209,7 +223,7 @@ def cluster_complaints(
             continue
         texts = [complaints[index].get("text", complaints[index].get("summary", "")) for index in indices]
         group_embeddings = embed_texts(texts)
-        group_labels = cluster_embeddings(
+        group_labels = agglomerative_labels(
             group_embeddings,
             min_cluster_size=min_cluster_size,
             distance_threshold=distance_threshold,
