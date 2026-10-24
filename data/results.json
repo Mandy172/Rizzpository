@@ -11,12 +11,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 1,
+    "cluster_id": 0,
     "duplicate_group": "DUP-01",
     "lat": 18.5204,
     "lng": 73.8567,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/water-leak.jpg"
+    "photo_path": "data/photos/water-leak.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-002",
@@ -30,12 +31,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": true,
     "confidence": 0.94,
-    "cluster_id": 2,
+    "cluster_id": 0,
     "duplicate_group": "DUP-02",
     "lat": 18.5213,
     "lng": 73.8581,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/pothole.jpg"
+    "photo_path": "data/photos/pothole.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-003",
@@ -49,12 +51,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 3,
+    "cluster_id": 0,
     "duplicate_group": "DUP-03",
     "lat": 18.5191,
     "lng": 73.8546,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/garbage.jpg"
+    "photo_path": "data/photos/garbage.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-004",
@@ -68,12 +71,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 4,
+    "cluster_id": 0,
     "duplicate_group": "DUP-04",
     "lat": 18.523,
     "lng": 73.8575,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/streetlight.jpg"
+    "photo_path": "data/photos/streetlight.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-005",
@@ -87,12 +91,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 5,
+    "cluster_id": 0,
     "duplicate_group": "DUP-05",
     "lat": 18.5184,
     "lng": 73.8578,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/blocked-drain.jpg"
+    "photo_path": "data/photos/blocked-drain.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-006",
@@ -106,12 +111,13 @@
     "severity_reason": "Road obstruction or civic hazard requiring municipal inspection.",
     "needs_human_review": true,
     "confidence": 0.81,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5222,
     "lng": 73.8539,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/fallen-tree.jpg"
+    "photo_path": "data/photos/fallen-tree.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-007",
@@ -125,12 +131,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5176,
     "lng": 73.8561,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-008",
@@ -144,12 +151,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": true,
     "confidence": 0.94,
-    "cluster_id": 2,
+    "cluster_id": 0,
     "duplicate_group": "DUP-02",
     "lat": 18.5215,
     "lng": 73.858,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-009",
@@ -163,12 +171,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5201,
     "lng": 73.8534,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-010",
@@ -182,12 +191,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5227,
     "lng": 73.8552,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-011",
@@ -201,12 +211,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5179,
     "lng": 73.8588,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-012",
@@ -220,12 +231,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5235,
     "lng": 73.8541,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-013",
@@ -239,12 +251,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 1,
+    "cluster_id": 0,
     "duplicate_group": "DUP-01",
     "lat": 18.5205,
     "lng": 73.8566,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-014",
@@ -258,12 +271,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 3,
+    "cluster_id": 0,
     "duplicate_group": "DUP-03",
     "lat": 18.5192,
     "lng": 73.8547,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-015",
@@ -277,12 +291,13 @@
     "severity_reason": "Road obstruction or civic hazard requiring municipal inspection.",
     "needs_human_review": true,
     "confidence": 0.81,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.524,
     "lng": 73.8564,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-016",
@@ -296,12 +311,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 4,
+    "cluster_id": 0,
     "duplicate_group": "DUP-04",
     "lat": 18.5231,
     "lng": 73.8576,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-017",
@@ -315,12 +331,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 5,
+    "cluster_id": 0,
     "duplicate_group": "DUP-05",
     "lat": 18.5185,
     "lng": 73.8579,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-018",
@@ -334,12 +351,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5198,
     "lng": 73.8592,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-019",
@@ -358,7 +376,8 @@
     "lat": 18.5203,
     "lng": 73.8568,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-020",
@@ -372,12 +391,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": true,
     "confidence": 0.94,
-    "cluster_id": 2,
+    "cluster_id": 1,
     "duplicate_group": "DUP-02",
     "lat": 18.5212,
     "lng": 73.8582,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-021",
@@ -391,12 +411,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 3,
+    "cluster_id": 1,
     "duplicate_group": "DUP-03",
     "lat": 18.519,
     "lng": 73.8545,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-022",
@@ -410,12 +431,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 4,
+    "cluster_id": 1,
     "duplicate_group": "DUP-04",
     "lat": 18.5229,
     "lng": 73.8574,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-023",
@@ -429,12 +451,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 5,
+    "cluster_id": 1,
     "duplicate_group": "DUP-05",
     "lat": 18.5183,
     "lng": 73.8577,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-024",
@@ -448,12 +471,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5169,
     "lng": 73.8551,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-025",
@@ -467,12 +491,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5238,
     "lng": 73.8584,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-026",
@@ -486,12 +511,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5209,
     "lng": 73.8542,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-027",
@@ -505,12 +531,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5173,
     "lng": 73.859,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-028",
@@ -524,12 +551,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5242,
     "lng": 73.8537,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-029",
@@ -543,12 +571,13 @@
     "severity_reason": "Road obstruction or civic hazard requiring municipal inspection.",
     "needs_human_review": true,
     "confidence": 0.81,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5218,
     "lng": 73.8528,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-030",
@@ -562,12 +591,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5195,
     "lng": 73.8601,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-031",
@@ -581,12 +611,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5225,
     "lng": 73.855,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-032",
@@ -600,12 +631,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5188,
     "lng": 73.8532,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-033",
@@ -624,7 +656,8 @@
     "lat": 18.5206,
     "lng": 73.8569,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-034",
@@ -638,12 +671,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": true,
     "confidence": 0.94,
-    "cluster_id": 2,
+    "cluster_id": 1,
     "duplicate_group": "DUP-02",
     "lat": 18.5214,
     "lng": 73.8583,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-035",
@@ -657,12 +691,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 3,
+    "cluster_id": 1,
     "duplicate_group": "DUP-03",
     "lat": 18.5193,
     "lng": 73.8548,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-036",
@@ -676,12 +711,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 4,
+    "cluster_id": 1,
     "duplicate_group": "DUP-04",
     "lat": 18.5232,
     "lng": 73.8577,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-037",
@@ -695,12 +731,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 5,
+    "cluster_id": 1,
     "duplicate_group": "DUP-05",
     "lat": 18.5186,
     "lng": 73.858,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-038",
@@ -714,12 +751,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5224,
     "lng": 73.8553,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-039",
@@ -733,12 +771,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.517,
     "lng": 73.8538,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-040",
@@ -752,12 +791,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5244,
     "lng": 73.8591,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-041",
@@ -771,12 +811,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 4,
+    "cluster_id": 1,
     "duplicate_group": "DUP-04",
     "lat": 18.523,
     "lng": 73.8573,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-042",
@@ -790,12 +831,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5167,
     "lng": 73.8586,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-043",
@@ -809,12 +851,13 @@
     "severity_reason": "Road obstruction or civic hazard requiring municipal inspection.",
     "needs_human_review": true,
     "confidence": 0.81,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.5241,
     "lng": 73.8529,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-044",
@@ -828,12 +871,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 1,
     "duplicate_group": null,
     "lat": 18.52,
     "lng": 73.8598,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 26
   },
   {
     "id": "CMP-045",
@@ -847,12 +891,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 6,
+    "cluster_id": 0,
     "duplicate_group": "DUP-06",
     "lat": 18.5158,
     "lng": 73.8563,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/water-leak.jpg"
+    "photo_path": "data/photos/water-leak.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-046",
@@ -866,12 +911,13 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 6,
+    "cluster_id": 0,
     "duplicate_group": "DUP-06",
     "lat": 18.5159,
     "lng": 73.8564,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-047",
@@ -885,12 +931,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 7,
+    "cluster_id": 0,
     "duplicate_group": "DUP-07",
     "lat": 18.526,
     "lng": 73.857,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/pothole.jpg"
+    "photo_path": "data/photos/pothole.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-048",
@@ -904,12 +951,13 @@
     "severity_reason": "Potholes and broken road surfaces pose immediate accident hazards for two-wheelers and pedestrians.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 7,
+    "cluster_id": 0,
     "duplicate_group": "DUP-07",
     "lat": 18.5261,
     "lng": 73.8571,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-049",
@@ -923,12 +971,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 8,
+    "cluster_id": 0,
     "duplicate_group": "DUP-08",
     "lat": 18.5175,
     "lng": 73.8519,
     "location_hint": "Pune Ward-12",
-    "photo_path": "data/photos/garbage.jpg"
+    "photo_path": "data/photos/garbage.jpg",
+    "reports": 28
   },
   {
     "id": "CMP-050",
@@ -942,12 +991,13 @@
     "severity_reason": "Uncollected decomposing waste causes public health concerns, foul stench, and attracts stray animals.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": 8,
+    "cluster_id": 0,
     "duplicate_group": "DUP-08",
     "lat": 18.5176,
     "lng": 73.852,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-051",
@@ -961,12 +1011,13 @@
     "severity_reason": "Dark corridors and faulty streetlights create safety hazards and poor visibility at night.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5251,
     "lng": 73.8549,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-052",
@@ -980,12 +1031,13 @@
     "severity_reason": "Blocked gutters and missing manhole covers cause sewage overflow and severe accident risks.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5165,
     "lng": 73.854,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-053",
@@ -999,12 +1051,13 @@
     "severity_reason": "Road obstruction or civic hazard requiring municipal inspection.",
     "needs_human_review": true,
     "confidence": 0.81,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5255,
     "lng": 73.8597,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   },
   {
     "id": "CMP-054",
@@ -1018,11 +1071,12 @@
     "severity_reason": "Continuous pipe leakage leads to potable water wastage and flooding of pedestrian footpaths.",
     "needs_human_review": false,
     "confidence": 0.94,
-    "cluster_id": -1,
+    "cluster_id": 0,
     "duplicate_group": null,
     "lat": 18.5226,
     "lng": 73.8551,
     "location_hint": "Pune Ward-12",
-    "photo_path": null
+    "photo_path": null,
+    "reports": 28
   }
 ]

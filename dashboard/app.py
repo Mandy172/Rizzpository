@@ -30,11 +30,52 @@ if "dispatched_ids" not in st.session_state:
 st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
-html, body, [class*="css"], * {
+/* Apply font safely without breaking Material Icon ligatures */
+html, body, [data-testid="stAppViewContainer"], [data-testid="stSidebar"], p, h1, h2, h3, h4, h5, h6, input, button, select {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-#MainMenu, footer, header { visibility: hidden; }
+#MainMenu, footer { visibility: hidden; }
+
+/* Keep header transparent and position the sidebar open/close toggle cleanly */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+    z-index: 100 !important;
+}
+
+[data-testid="stSidebarCollapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    top: 0.8rem !important;
+    left: 0.8rem !important;
+}
+
+[data-testid="stSidebarCollapsedControl"] button {
+    background: #0f1930 !important;
+    border: 1.5px solid #3b82f6 !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    width: 2.6rem !important;
+    height: 2.6rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4) !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stSidebarCollapsedControl"] button:hover {
+    background: #1d4ed8 !important;
+    border-color: #93c5fd !important;
+    transform: scale(1.08) !important;
+}
+
+[data-testid="stSidebarCollapsedControl"] svg,
+[data-testid="stSidebarCollapsedControl"] span {
+    font-size: 1.4rem !important;
+    width: 1.4rem !important;
+    height: 1.4rem !important;
+}
 
 /* ── App Canvas ── */
 [data-testid="stAppViewContainer"] {
@@ -261,13 +302,21 @@ html, body, [class*="css"], * {
 def load_data():
     results_path = PROJECT_ROOT / "data" / "results.json"
     if not results_path.exists():
-        st.error(f"Cannot find {results_path}")
+        results_path = PROJECT_ROOT / "results.json"
+    if not results_path.exists():
+        st.error(f"Cannot find results.json at {results_path}")
         return pd.DataFrame()
 
     with open(results_path, "r", encoding="utf-8") as f:
         records = json.load(f)
 
     df = pd.DataFrame(records)
+
+    # Normalize coordinate column names
+    if "lat" not in df.columns and "latitude" in df.columns:
+        df["lat"] = df["latitude"]
+    if "lng" not in df.columns and "longitude" in df.columns:
+        df["lng"] = df["longitude"]
 
     # Normalize column names across various teammate conventions
     if "urgency" in df.columns and "severity" not in df.columns:

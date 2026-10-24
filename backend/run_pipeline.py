@@ -107,10 +107,20 @@ def run_pipeline(
         if rate_limit_delay > 0:
             time.sleep(rate_limit_delay)
 
-    save_results(list(cache.values()), output_path)
+    all_results = list(cache.values())
+
+    # Step: Cluster complaints using semantic deduplication
+    try:
+        from backend.cluster import cluster_complaints
+        print("\n[Clustering] Running semantic deduplication clustering (bge-m3 + HDBSCAN)...")
+        all_results = cluster_complaints(all_results)
+    except Exception as e:
+        print(f"[Warning] Clustering step failed: {e}")
+
+    save_results(all_results, output_path)
     print(f"\nPipeline finished. Total: {len(results)} | Cached: {cached_count} | Newly Processed: {processed_count}")
     print(f"Results saved to {output_path}")
-    return list(cache.values())
+    return all_results
 
 
 if __name__ == "__main__":
