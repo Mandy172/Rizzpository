@@ -1,8 +1,16 @@
 import json
+import os
+import sys
+from pathlib import Path
 import pandas as pd
 import streamlit as st
 import altair as alt
 import pydeck as pdk
+
+# Ensure project root in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -169,17 +177,20 @@ html, body, [class*="css"] {
 
 
 # ── Data ──────────────────────────────────────────────────────────────────────
+if "custom_complaints" not in st.session_state:
+    st.session_state["custom_complaints"] = []
+
 @st.cache_data
 def load():
     with open("data/results.json") as f:
         raw = json.load(f)
-    df = pd.DataFrame(raw)
-    sizes = df[df.cluster_id >= 0].groupby("cluster_id").size()
-    df["reports"] = df.cluster_id.map(sizes).fillna(1).astype(int)
-    df["priority"] = df.severity * 10 + df.reports * 3
-    return df
+    return raw
 
-df = load()
+raw_data = st.session_state["custom_complaints"] + load()
+df = pd.DataFrame(raw_data)
+sizes = df[df.cluster_id >= 0].groupby("cluster_id").size()
+df["reports"] = df.cluster_id.map(sizes).fillna(1).astype(int)
+df["priority"] = df.severity * 10 + df.reports * 3
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -223,9 +234,89 @@ view = df[mask].sort_values("priority", ascending=False)
 # ── Header ────────────────────────────────────────────────────────────────────
 st.markdown(
     '<p class="page-title">Civic Complaint Triage Dashboard</p>'
-    '<p class="page-sub"><span class="live-dot"></span>Live · Pune Municipal Corporation · Ward A</p>',
+    '<p class="page-sub"><span class="live-dot"></span>Live · Pune Municipal Corporation · Ward 12</p>',
     unsafe_allow_html=True,
 )
+
+# ── Live Triage Interactive Demo ──────────────────────────────────────────────
+with st.expander("✨ Test Live Citizen Complaint Intake (Marathi / Hindi / Hinglish / English)", expanded=False):
+    c_col1, c_col2 = st.columns([3, 2])
+    with c_col1:
+        sample_pick = st.selectbox(
+            "Or pick a pre-built example:",
+            [
+                "-- Write custom complaint below --",
+                "Pipe phat gayi hai Shivaji Chowk ke paas, poori road par paani bhar gaya hai",
+                "रस्त्यावर मोठा खड्डा आहे, काल एक बाईक घसरली",
+                "पार्कच्या प्रवेशद्वाराची स्ट्रीट लाईट बंद आहे, रात्री अपघात होऊ शकतो",
+                "Hospital ke samne open garbage dher hai, foul smell spreading everywhere",
+                "Footpath pe open manhole cover nahi hai, bachche gir sakte hain",
+            ],
+        )
+        default_val = "" if sample_pick.startswith("--") else sample_pick
+        user_complaint = st.text_area(
+            "Citizen Complaint:",
+            value=default_val,
+            placeholder="Type complaint in Hindi, Marathi, Hinglish, or English...",
+            height=100,
+        )
+
+    with c_col2:
+        st.markdown("**Photo Evidence (Optional)**")
+        ref_photo = st.selectbox(
+            "Select reference photo:",
+            [
+                "None",
+                "water-leak.jpg",
+                "pothole.jpg",
+                "garbage.jpg",
+                "blocked-drain.jpg",
+                "streetlight.jpg",
+                "fallen-tree.jpg",
+            ],
+        )
+        if ref_photo != "None":
+            st.image(f"data/photos/{ref_photo}", width=180)
+
+    if st.button("🚀 Triage & Route with Gemma 4", type="primary"):
+        if not user_complaint.strip():
+            st.warning("Please enter a complaint description.")
+        else:
+            with st.spinner("Classifying with Gemma 4 local model..."):
+                try:
+                    from backend.triage import triage_complaint
+
+                    p_path = f"data/photos/{ref_photo}" if ref_photo != "None" else None
+                    res = triage_complaint(user_complaint, photo_path=p_path)
+
+                    sev_map = {"critical": 5, "high": 4, "medium": 3, "low": 1}
+                    urg = res.get("urgency", "medium")
+                    sev_num = sev_map.get(urg, 3)
+
+                    new_item = {
+                        "id": f"LIVE-{len(raw_data) + 1:03d}",
+                        "text": user_complaint,
+                        "language": "multilingual",
+                        "ward": "Ward-12",
+                        "category": res.get("category", "other"),
+                        "department": res.get("department", "Sanitation"),
+                        "severity": sev_num,
+                        "urgency": urg,
+                        "severity_reason": res.get("urgency_reason", "Real-time AI triage."),
+                        "needs_human_review": (res.get("category") == "other" or sev_num == 5),
+                        "confidence": 0.95,
+                        "cluster_id": -1,
+                        "duplicate_group": None,
+                        "lat": 18.5204 + (len(st.session_state["custom_complaints"]) * 0.001),
+                        "lng": 73.8567 + (len(st.session_state["custom_complaints"]) * 0.001),
+                        "location_hint": res.get("location", "Ward-12, Pune"),
+                        "photo_path": p_path,
+                    }
+                    st.session_state["custom_complaints"].insert(0, new_item)
+                    st.success(f"✅ Routed to **{res.get('department')}** · Category: **{res.get('category')}** · Urgency: **{urg.upper()}**")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Triage error: {e}")
 
 # ── KPI row ───────────────────────────────────────────────────────────────────
 k1, k2, k3, k4, k5 = st.columns(5)
@@ -362,6 +453,11 @@ with left:
             if row.cluster_id >= 0
             else '<span class="cluster-pill">Unique</span>'
         )
+        photo_tag = (
+            '<span class="badge" style="background:#0369a1;color:#bae6fd">📷 Photo</span>'
+            if ("photo_path" in row and row.photo_path and str(row.photo_path) not in ["nan", "None"])
+            else ""
+        )
         st.markdown(f"""
 <div class="complaint-card">
   <div class="complaint-meta">
@@ -371,6 +467,7 @@ with left:
     <span class="badge dept-badge">{row.department.replace('_',' ').title()}</span>
     {review_tag}
     {cluster_tag}
+    {photo_tag}
   </div>
   <p class="complaint-text">{row.text}</p>
   <div style="font-size:0.72rem;color:#475569">
