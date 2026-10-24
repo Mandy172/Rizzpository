@@ -37,12 +37,31 @@ Your task is to analyze the complaint and return ONLY a valid raw JSON object (n
 
 Keys:
 - "category": Choose one of: "road_damage", "water_leak", "garbage", "streetlight", "drainage", "other".
-- "department": The responsible municipal department: "Roads", "Water Supply", "Sanitation", "Electrical", "Drainage". If completely undetermined, use "unknown".
+  - "road_damage": Potholes, road craters, broken pavement, loose footpath tiles, broken speed breakers.
+  - "water_leak": Burst pipes, leaking water supply lines, dripping or broken public taps/valves.
+  - "garbage": Accumulated solid waste, overflowing community dustbins/dumpsters, rotting waste bags.
+  - "drainage": Blocked gutters/drains, clogged storm drains, overflowing wastewater/sewage onto roads.
+  - "streetlight": Non-functional street lamps, flickering lights, dark streets without lighting.
+  - "other": Miscellaneous civic complaints not covered above, including:
+    * Obstructions on roads or footpaths (e.g., fallen trees, abandoned vehicles).
+    * Animal-related issues (e.g., dead animals on roads, injured stray animals). Note: dead/injured animals are "other", NEVER "garbage".
+    * Missing or open manhole covers on footpaths or roads (classified as "other", routed to "Drainage").
+
+- "department": The responsible municipal department:
+  - "Roads": Handles "road_damage" and road obstructions (fallen trees, abandoned parked vehicles).
+  - "Water Supply": Handles "water_leak" (pipeline bursts, potable water wastage).
+  - "Sanitation": Handles "garbage" and animal-related complaints (dead animals, injured strays).
+  - "Electrical": Handles "streetlight" (lamp repairs, dark corridors).
+  - "Drainage": Handles "drainage" and open/missing manhole covers.
+  If completely undetermined, use "unknown".
+
 - "urgency": Choose one of:
-  - "critical": Immediate danger to life or severe hazard (e.g., open manhole, deep road crater causing crashes, live electrical wire).
-  - "high": Major service disruption, active flooding, leaking water main, rotting waste pile.
-  - "medium": Normal civic maintenance issue (e.g., uncollected bin, clogged drain without flooding, non-working light).
-  - "low": Minor repair, slow drip, flickering light, cosmetic issue.
+  - "critical": Direct, severe danger to human life or safety. Examples: open/missing manhole covers on pedestrian paths, live electrical wires, or deep craters/potholes at busy transit stops or causing vehicle crashes and rider falls.
+  - "high": Major service disruption or significant public hazard. Examples: broken water supply mains flooding roads or footpaths, active sewage overflow pouring onto streets, burning garbage with smoke, market-area waste piles uncollected for days, road hazards impacting transit or ambulances (e.g. broken speed breakers launching vehicles, vehicle trapped in crater), or multiple dark streetlights creating dangerous corridors.
+  - "medium": Routine civic maintenance or moderate inconvenience without severe hazard. Examples: overflowing community bins, neighborhood trash heaps with bad odors, ordinary drain clogging or rainwater puddles, broken road pavement or loose tiles creating pedestrian trip hazards without vehicle accidents, leaking public taps or slow line seeps, single streetlight outage/blinking, and dead or injured animals.
+  - "low": Minor repair or cosmetic issue with minimal impact. Examples: slow tap or valve drip (distinguished from leaking pipes or running taps), flickering bulb where lighting still works, or parked abandoned vehicle without road blockage.
+  - Note: Evaluate urgency by actual severity and hazard level rather than emotional wording. Do not escalate routine community maintenance to high unless a major service breakdown or public health hazard is present.
+
 - "urgency_reason": A concise 1-sentence explanation in English justifying the urgency level.
 - "location": Specific landmark, street, chowk, or ward mentioned in the complaint. If no location is mentioned, return "unknown". NEVER invent or guess a location.
 - "summary": A concise 1-sentence English summary of the issue. If the complaint is vague (e.g. "road bad"), return "unknown".
