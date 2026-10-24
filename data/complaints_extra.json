@@ -1,152 +1,122 @@
 [
   {
-    "id": "CMP-X01",
-    "text": "Deep crater formed right in front of the maternity hospital entrance, ambulances are getting stuck.",
+    "id": "extra-01",
     "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5194,
-    "longitude": 73.8602,
-    "photo_path": "data/photos/pothole.jpg",
+    "text": "There is a deep pothole in the middle of the road near the main bus stop in Ward 12. Two bike riders slipped and fell here yesterday evening. Please repair it before someone is seriously injured.",
     "expected": {
-      "category": "road_damage",
-      "severity": "critical",
-      "department": "Roads"
-    },
-    "duplicate_group": null
-  },
-  {
-    "id": "CMP-X02",
-    "text": "Water pipeline burst near the sub-station, clean drinking water flowing into the gutter.",
-    "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5177,
-    "longitude": 73.8562,
-    "photo_path": "data/photos/water-leak.jpg",
-    "expected": {
-      "category": "water_leak",
+      "category": "Roads & Potholes",
       "severity": "high",
-      "department": "Water Supply"
+      "department": "Roads Department"
     },
-    "duplicate_group": null
+    "duplicate_group": "dup-pothole-bus-stop",
+    "tests": "Injury and safety wording should raise severity to high."
   },
   {
-    "id": "CMP-X03",
-    "text": "Open garbage pile behind the vegetable market hasn't been cleared for a week, stray cattle roaming around.",
+    "id": "extra-02",
     "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5195,
-    "longitude": 73.8549,
-    "photo_path": "data/photos/garbage.jpg",
+    "text": "The garbage bin at the corner of Lane 4 has not been emptied for three days. Waste is spilling onto the road and the smell is unbearable. Flies and stray animals are gathering around it.",
     "expected": {
-      "category": "garbage",
-      "severity": "high",
-      "department": "Sanitation"
-    },
-    "duplicate_group": null
-  },
-  {
-    "id": "CMP-X04",
-    "text": "Streetlight pole number 24 outside the community center is dark and unlit.",
-    "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5233,
-    "longitude": 73.8578,
-    "photo_path": "data/photos/streetlight.jpg",
-    "expected": {
-      "category": "streetlight",
+      "category": "Garbage & Sanitation",
       "severity": "medium",
-      "department": "Electrical"
+      "department": "Solid Waste Management"
     },
-    "duplicate_group": null
+    "duplicate_group": "dup-garbage-lane4",
+    "tests": "Mentions stray animals but the main issue is uncollected garbage, so the category should stay Garbage."
   },
   {
-    "id": "CMP-X05",
-    "text": "Rainwater gutter choked with plastic bottles near Lane 3, foul smelling sludge spilling onto pedestrian walk.",
+    "id": "extra-03",
     "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5187,
-    "longitude": 73.8581,
-    "photo_path": "data/photos/blocked-drain.jpg",
+    "text": "The streetlight outside the community hall has been off for over a week. The lane is completely dark at night and women and children are afraid to walk here after sunset.",
     "expected": {
-      "category": "drainage",
+      "category": "Street Lighting",
+      "severity": "medium",
+      "department": "Electrical Department"
+    },
+    "duplicate_group": null,
+    "tests": "Safety concern without an injury. Adjust severity if the team's rubric treats night-safety as high."
+  },
+  {
+    "id": "extra-04",
+    "language": "en",
+    "text": "A main water pipe has burst near the petrol pump and water has been gushing onto the road since early morning. The road is flooded and thousands of litres are being wasted. Please send a repair team urgently.",
+    "expected": {
+      "category": "Water Supply",
       "severity": "high",
-      "department": "Drainage"
+      "department": "Water Supply Department"
     },
-    "duplicate_group": null
+    "duplicate_group": null,
+    "tests": "Large, ongoing water loss plus the word 'urgently' should give high severity."
   },
   {
-    "id": "CMP-X06",
-    "text": "Old banyan tree branch snapped and fell across both lanes outside the post office.",
+    "id": "extra-05",
     "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5220,
-    "longitude": 73.8540,
-    "photo_path": "data/photos/fallen-tree.jpg",
+    "text": "The manhole cover near the primary school gate is missing and the hole is wide open. Children walk past it every day. Someone should cover it immediately.",
     "expected": {
-      "category": "other",
+      "category": "Drainage & Sewage",
       "severity": "high",
-      "department": "Roads"
+      "department": "Drainage Department"
     },
-    "duplicate_group": null
+    "duplicate_group": null,
+    "tests": "Short complaint with a serious hazard. Children and an open hole should drive high severity."
   },
   {
-    "id": "CMP-X07",
-    "text": "Minor leakage from public garden sprinkler pipe onto the grass.",
+    "id": "extra-06",
     "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5228,
-    "longitude": 73.8572,
-    "photo_path": null,
+    "text": "A pack of about eight stray dogs keeps chasing children and cyclists near the playground. A child was bitten on the leg yesterday. We need the dogs to be taken away and vaccinated.",
     "expected": {
-      "category": "water_leak",
+      "category": "Stray Animals",
+      "severity": "high",
+      "department": "Veterinary & Health Department"
+    },
+    "duplicate_group": null,
+    "tests": "An actual bite incident should be high severity."
+  },
+  {
+    "id": "extra-07",
+    "language": "en",
+    "text": "A large branch from the neem tree fell across the lane last night and is blocking the road. Cars cannot pass, but luckily no one was hurt. Please remove the branch.",
+    "expected": {
+      "category": "Trees & Gardens",
+      "severity": "medium",
+      "department": "Garden Department"
+    },
+    "duplicate_group": null,
+    "tests": "Road is blocked but nobody is injured, so medium rather than high."
+  },
+  {
+    "id": "extra-08",
+    "language": "en",
+    "text": "Some of the paving tiles on the footpath outside the public library are slightly uneven. It is not urgent, but it would be good to get them levelled when the staff have time.",
+    "expected": {
+      "category": "Roads & Potholes",
       "severity": "low",
-      "department": "Water Supply"
+      "department": "Roads Department"
     },
-    "duplicate_group": null
+    "duplicate_group": null,
+    "tests": "Polite, explicitly non-urgent wording should give low severity."
   },
   {
-    "id": "CMP-X08",
-    "text": "Broken pavement concrete paver block causing pedestrians to stumble near ATM booth.",
+    "id": "extra-09",
     "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5237,
-    "longitude": 73.8543,
-    "photo_path": null,
+    "text": "The road near the bus stop is in terrible condition. There is a big hole that has been there for weeks and bikes keep skidding on it. Somebody will get hurt soon.",
     "expected": {
-      "category": "road_damage",
+      "category": "Roads & Potholes",
+      "severity": "high",
+      "department": "Roads Department"
+    },
+    "duplicate_group": "dup-pothole-bus-stop",
+    "tests": "Duplicate of extra-01 in different words. Should land in the same duplicate group."
+  },
+  {
+    "id": "extra-10",
+    "language": "en",
+    "text": "Nobody has cleared the rubbish from the Lane 4 corner since Monday. It is overflowing and stinking. Please send the collection truck.",
+    "expected": {
+      "category": "Garbage & Sanitation",
       "severity": "medium",
-      "department": "Roads"
+      "department": "Solid Waste Management"
     },
-    "duplicate_group": null
-  },
-  {
-    "id": "CMP-X09",
-    "text": "Open stormwater chamber without safety grill near school crossing, high risk of child injury.",
-    "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5256,
-    "longitude": 73.8598,
-    "photo_path": null,
-    "expected": {
-      "category": "other",
-      "severity": "critical",
-      "department": "Drainage"
-    },
-    "duplicate_group": null
-  },
-  {
-    "id": "CMP-X10",
-    "text": "Community dustbin overflowed with commercial food waste outside restaurant lane.",
-    "language": "en",
-    "ward": "Ward-12",
-    "latitude": 18.5202,
-    "longitude": 73.8536,
-    "photo_path": null,
-    "expected": {
-      "category": "garbage",
-      "severity": "medium",
-      "department": "Sanitation"
-    },
-    "duplicate_group": null
+    "duplicate_group": "dup-garbage-lane4",
+    "tests": "Duplicate of extra-02 in different words. Should land in the same duplicate group."
   }
 ]
