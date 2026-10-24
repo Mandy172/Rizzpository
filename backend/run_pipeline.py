@@ -1,93 +1,133 @@
-"""Pipeline execution script for CivicFlow Triage & Routing.
-
-Processes complaints from data/complaints.json through:
-1. Triage Classification (Category, Severity, Department, Location, Summary)
-2. Saves enriched records to results.json for the Streamlit dashboard and evaluation.
-
-Usage:
-    python3 backend/run_pipeline.py [--limit N] [--sample]
-"""
-
 import argparse
 import json
 import os
 import sys
 import time
+from pathlib import Path
+from typing import Dict, List
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Ensure project root is in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from backend.triage import triage_complaint
 
 
-def run_pipeline(limit: int = 0, use_sample: bool = False):
-    complaints_file = "data/complaints.json"
-    output_file = "results.json"
+def load_complaints(data_path: Path) -> List[dict]:
+    with open(data_path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    if not os.path.exists(complaints_file):
-        print(f"Error: {complaints_file} not found.")
-        sys.exit(1)
 
-    with open(complaints_file, "r", encoding="utf-8") as f:
-        complaints = json.load(f)
+def load_existing_results(output_path: Path) -> Dict[str, dict]:
+    """Load existing results to enable caching / resuming."""
+    if not output_path.exists():
+        return {}
+    try:
+        with open(output_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            if isinstance(data, list):
+                return {item["id"]: item for item in data if "id" in item}
+    except Exception as e:
+        print(f"[Warning] Failed to load existing cache from {output_path}: {e}")
+    return {}
 
-    if limit > 0:
-        complaints = complaints[:limit]
 
-    print(f"🚀 Running CivicFlow AI Pipeline on {len(complaints)} complaints...")
-    start_time = time.time()
+def save_results(results: List[dict], output_path: Path) -> None:
+    """Save results atomically to JSON."""
+    temp_path = output_path.with_suffix(".tmp")
+    with open(temp_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+    temp_path.replace(output_path)
+
+
+def run_pipeline(
+    input_file: str = "data/complaints.json",
+    output_file: str = "results.json",
+    backend: str = None,
+    rate_limit_delay: float = 1.0,
+    force: bool = False,
+    max_items: int = None,
+) -> List[dict]:
+    data_path = PROJECT_ROOT / input_file
+    output_path = PROJECT_ROOT / output_file
+
+    complaints = load_complaints(data_path)
+    if max_items:
+        complaints = complaints[:max_items]
+
+    cache = {} if force else load_existing_results(output_path)
+    print(f"Loaded {len(complaints)} complaints from {input_file}.")
+    if cache:
+        print(f"Found {len(cache)} cached items in {output_file}.")
+
     results = []
+    processed_count = 0
+    cached_count = 0
 
-    for i, c in enumerate(complaints):
+    for idx, c in enumerate(complaints, start=1):
         cid = c.get("id")
         text = c.get("text", "")
-        photo = c.get("photo_path")
-        lang = c.get("language")
+        photo_path = c.get("photo_path")
 
-        print(f"[{i+1}/{len(complaints)}] Processing {cid} ({lang})...", end="", flush=True)
+        # Check cache
+        if not force and cid in cache:
+            results.append(cache[cid])
+            cached_count += 1
+            continue
 
-        if use_sample:
-            # Quick mock mode for instant dashboard testing
-            exp = c.get("expected", {})
-            pred = {
-                "category": exp.get("category", "other"),
-                "severity": exp.get("severity", "medium"),
-                "department": exp.get("department", "Sanitation"),
-                "urgency_reason": "Verified civic complaint requiring prompt municipal attention.",
-                "location": "Ward-12, Pune",
-                "summary": text[:80],
-            }
-        else:
-            pred = triage_complaint(text, photo_path=photo)
+        print(f"[{idx}/{len(complaints)}] Triaging {cid} ({c.get('language', 'unknown')})...")
+        resolved_photo = str(PROJECT_ROOT / photo_path) if photo_path else None
+        
+        triage_output = triage_complaint(
+            complaint=text,
+            photo_path=resolved_photo,
+            backend=backend,
+        )
 
-        dg = c.get("duplicate_group")
-        item = {
-            "id": cid,
-            "text": text,
-            "language": lang,
-            "ward": c.get("ward", "Ward-12"),
-            "latitude": c.get("latitude"),
-            "longitude": c.get("longitude"),
-            "photo_path": photo,
-            "expected": c.get("expected"),
-            "duplicate_group": dg,
-            "cluster_id": dg if dg else f"SINGLE-{cid}",
-            "is_duplicate": dg is not None,
-            "prediction": pred,
-        }
-        results.append(item)
-        print(f" -> {pred.get('category')} | {pred.get('department')} | {pred.get('severity')}")
+        # Merge original complaint fields with triage output
+        merged = dict(c)
+        merged.update({
+            "category": triage_output.get("category"),
+            "department": triage_output.get("department"),
+            "urgency": triage_output.get("urgency"),
+            "urgency_reason": triage_output.get("urgency_reason"),
+            "location": triage_output.get("location"),
+            "summary": triage_output.get("summary"),
+            "photo_severity": triage_output.get("photo_severity"),
+        })
 
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+        results.append(merged)
+        cache[cid] = merged
+        processed_count += 1
 
-    elapsed = time.time() - start_time
-    print(f"\n🎉 Finished in {elapsed:.2f}s! Saved {len(results)} triaged records to {output_file}")
+        # Periodically update output file
+        save_results(list(cache.values()), output_path)
+
+        if rate_limit_delay > 0:
+            time.sleep(rate_limit_delay)
+
+    save_results(list(cache.values()), output_path)
+    print(f"\nPipeline finished. Total: {len(results)} | Cached: {cached_count} | Newly Processed: {processed_count}")
+    print(f"Results saved to {output_path}")
+    return list(cache.values())
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run civic complaint triage pipeline")
-    parser.add_argument("--limit", type=int, default=0, help="Limit number of complaints to process (0 for all)")
-    parser.add_argument("--sample", action="store_true", help="Generate instantaneous sample output without calling LLM")
+    parser = argparse.ArgumentParser(description="Run civic complaint triage pipeline.")
+    parser.add_argument("--input", default="data/complaints.json", help="Path to input complaints JSON.")
+    parser.add_argument("--output", default="results.json", help="Path to output results JSON.")
+    parser.add_argument("--backend", default=None, help="LLM backend: 'gemini' or 'ollama'.")
+    parser.add_argument("--delay", type=float, default=1.0, help="Rate limit delay in seconds.")
+    parser.add_argument("--force", action="store_true", help="Ignore cache and re-process all.")
+    parser.add_argument("--limit", type=int, default=None, help="Max items to process.")
     args = parser.parse_args()
 
-    run_pipeline(limit=args.limit, use_sample=args.sample)
+    run_pipeline(
+        input_file=args.input,
+        output_file=args.output,
+        backend=args.backend,
+        rate_limit_delay=args.delay,
+        force=args.force,
+        max_items=args.limit,
+    )
