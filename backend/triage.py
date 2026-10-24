@@ -2,7 +2,14 @@ import base64
 import json
 import os
 import re
+import sys
+from pathlib import Path
 from typing import Optional
+
+# Ensure project root is in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from dotenv import load_dotenv
 from google import genai
@@ -14,9 +21,12 @@ from backend.schema import ComplaintTriage
 load_dotenv()
 
 # Configuration from environment
-LLM_BACKEND = os.environ.get("LLM_BACKEND", "gemini").lower()
+LLM_BACKEND = os.environ.get(
+    "LLM_BACKEND",
+    "gemini" if os.environ.get("GEMINI_API_KEY") else "ollama",
+).lower()
 MODEL_NAME = os.environ.get("MODEL_NAME", "gemma-4-26b-a4b-it")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma3:4b")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma4:latest")
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 
 BASE_SYSTEM_INSTRUCTIONS = """You are an AI assistant helping a municipal ward office triage citizen complaints.

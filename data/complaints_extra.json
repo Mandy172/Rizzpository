@@ -1,0 +1,152 @@
+[
+  {
+    "id": "CMP-X01",
+    "text": "Deep crater formed right in front of the maternity hospital entrance, ambulances are getting stuck.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5194,
+    "longitude": 73.8602,
+    "photo_path": "data/photos/pothole.jpg",
+    "expected": {
+      "category": "road_damage",
+      "severity": "critical",
+      "department": "Roads"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X02",
+    "text": "Water pipeline burst near the sub-station, clean drinking water flowing into the gutter.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5177,
+    "longitude": 73.8562,
+    "photo_path": "data/photos/water-leak.jpg",
+    "expected": {
+      "category": "water_leak",
+      "severity": "high",
+      "department": "Water Supply"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X03",
+    "text": "Open garbage pile behind the vegetable market hasn't been cleared for a week, stray cattle roaming around.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5195,
+    "longitude": 73.8549,
+    "photo_path": "data/photos/garbage.jpg",
+    "expected": {
+      "category": "garbage",
+      "severity": "high",
+      "department": "Sanitation"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X04",
+    "text": "Streetlight pole number 24 outside the community center is dark and unlit.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5233,
+    "longitude": 73.8578,
+    "photo_path": "data/photos/streetlight.jpg",
+    "expected": {
+      "category": "streetlight",
+      "severity": "medium",
+      "department": "Electrical"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X05",
+    "text": "Rainwater gutter choked with plastic bottles near Lane 3, foul smelling sludge spilling onto pedestrian walk.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5187,
+    "longitude": 73.8581,
+    "photo_path": "data/photos/blocked-drain.jpg",
+    "expected": {
+      "category": "drainage",
+      "severity": "high",
+      "department": "Drainage"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X06",
+    "text": "Old banyan tree branch snapped and fell across both lanes outside the post office.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5220,
+    "longitude": 73.8540,
+    "photo_path": "data/photos/fallen-tree.jpg",
+    "expected": {
+      "category": "other",
+      "severity": "high",
+      "department": "Roads"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X07",
+    "text": "Minor leakage from public garden sprinkler pipe onto the grass.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5228,
+    "longitude": 73.8572,
+    "photo_path": null,
+    "expected": {
+      "category": "water_leak",
+      "severity": "low",
+      "department": "Water Supply"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X08",
+    "text": "Broken pavement concrete paver block causing pedestrians to stumble near ATM booth.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5237,
+    "longitude": 73.8543,
+    "photo_path": null,
+    "expected": {
+      "category": "road_damage",
+      "severity": "medium",
+      "department": "Roads"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X09",
+    "text": "Open stormwater chamber without safety grill near school crossing, high risk of child injury.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5256,
+    "longitude": 73.8598,
+    "photo_path": null,
+    "expected": {
+      "category": "other",
+      "severity": "critical",
+      "department": "Drainage"
+    },
+    "duplicate_group": null
+  },
+  {
+    "id": "CMP-X10",
+    "text": "Community dustbin overflowed with commercial food waste outside restaurant lane.",
+    "language": "en",
+    "ward": "Ward-12",
+    "latitude": 18.5202,
+    "longitude": 73.8536,
+    "photo_path": null,
+    "expected": {
+      "category": "garbage",
+      "severity": "medium",
+      "department": "Sanitation"
+    },
+    "duplicate_group": null
+  }
+]
