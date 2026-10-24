@@ -4,3 +4,5 @@ streamlit
 pandas
 pydantic
 requests
+scikit-learn
+hdbscan
