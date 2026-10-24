@@ -1,7 +1,10 @@
 import json
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional
+from uuid import uuid4
 import pandas as pd
 import streamlit as st
 import altair as alt
@@ -25,6 +28,8 @@ if "resolved_ids" not in st.session_state:
     st.session_state.resolved_ids = set()
 if "dispatched_ids" not in st.session_state:
     st.session_state.dispatched_ids = set()
+if "last_submission" not in st.session_state:
+    st.session_state.last_submission = None
 
 # ── Ultra-modern CSS Styling (Zero-indent HTML blocks to prevent markdown codeblocks) ──
 st.markdown("""<style>
@@ -310,6 +315,18 @@ def load_data():
     with open(results_path, "r", encoding="utf-8") as f:
         records = json.load(f)
 
+    # Citizen reports are stored outside the seed dataset so a demo submission
+    # remains visible after a browser refresh without modifying benchmark data.
+    submitted_path = PROJECT_ROOT / "data" / "submitted_complaints.json"
+    if submitted_path.exists():
+        try:
+            with open(submitted_path, "r", encoding="utf-8") as submitted_file:
+                submitted_records = json.load(submitted_file)
+            if isinstance(submitted_records, list):
+                records.extend(submitted_records)
+        except (json.JSONDecodeError, OSError):
+            pass
+
     df = pd.DataFrame(records)
 
     # Normalize coordinate column names
@@ -344,6 +361,68 @@ def load_data():
     df["priority"] = (df["severity"] * 10) + (df["reports"] * 3)
 
     return df
+
+
+def save_uploaded_photo(uploaded_file) -> Optional[str]:
+    """Save an optional image locally so the vision-capable triage path can read it."""
+    if uploaded_file is None:
+        return None
+
+    extension = Path(uploaded_file.name).suffix.lower()
+    if extension not in {".jpg", ".jpeg", ".png"}:
+        return None
+
+    upload_dir = PROJECT_ROOT / "data" / "uploads"
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    filename = f"report-{uuid4().hex[:12]}{extension}"
+    photo_path = upload_dir / filename
+    photo_path.write_bytes(uploaded_file.getbuffer())
+    return str(photo_path.relative_to(PROJECT_ROOT))
+
+
+def submit_complaint(text: str, language: str, landmark: str, uploaded_file) -> dict:
+    """Run the existing triage model and persist one citizen report for the dashboard."""
+    from backend.triage import triage_complaint
+
+    relative_photo_path = save_uploaded_photo(uploaded_file)
+    absolute_photo_path = (
+        str(PROJECT_ROOT / relative_photo_path) if relative_photo_path else None
+    )
+    triage = triage_complaint(text, photo_path=absolute_photo_path)
+
+    urgency_to_severity = {"low": 2, "medium": 3, "high": 4, "critical": 5}
+    ward_center = {"lat": 18.5204, "lng": 73.8567}
+    report = {
+        "id": f"USR-{uuid4().hex[:7].upper()}",
+        "text": text.strip(),
+        "language": language,
+        "ward": "Ward-12",
+        "category": triage["category"],
+        "department": triage["department"],
+        "severity": urgency_to_severity.get(triage["urgency"], 3),
+        "urgency": triage["urgency"],
+        "severity_reason": triage.get("urgency_reason") or "Assessed by the CivicSort triage model.",
+        "needs_human_review": triage["category"] == "other" or triage["department"] == "unknown",
+        "confidence": 0.92 if triage["department"] != "unknown" else 0.60,
+        "cluster_id": -1,
+        "duplicate_group": None,
+        "lat": ward_center["lat"],
+        "lng": ward_center["lng"],
+        "location_hint": landmark.strip() or triage.get("location", "unknown"),
+        "photo_path": relative_photo_path,
+        "reports": 1,
+        "submitted_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+    submitted_path = PROJECT_ROOT / "data" / "submitted_complaints.json"
+    try:
+        previous = json.loads(submitted_path.read_text(encoding="utf-8")) if submitted_path.exists() else []
+        previous = previous if isinstance(previous, list) else []
+    except (json.JSONDecodeError, OSError):
+        previous = []
+    previous.append(report)
+    submitted_path.write_text(json.dumps(previous, ensure_ascii=False, indent=2), encoding="utf-8")
+    return report
 
 
 df_all = load_data()
@@ -488,9 +567,10 @@ with header_col2:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ── 2 Main Tabs (Live AI Triage removed completely) ───────────────────────────
-tab_ops, tab_clusters = st.tabs([
+# ── Main Tabs ────────────────────────────────────────────────────────────────
+tab_ops, tab_submit, tab_clusters = st.tabs([
     "📊 Ward Operations Center",
+    "📝 Report a Civic Issue",
     "🔗 Duplicate Cluster Analytics",
 ])
 
@@ -818,7 +898,97 @@ Municipal savings: merged {int(g["reports"])} tickets into 1 crew dispatch
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 2: DUPLICATE CLUSTER DEEP-DIVE
+# TAB 2: CITIZEN COMPLAINT INTAKE
+# ══════════════════════════════════════════════════════════════════════════════
+with tab_submit:
+    st.markdown("""<div style="margin-bottom:1.2rem;">
+<h3 style="font-size:1.3rem;font-weight:800;color:#ffffff;margin:0 0 0.3rem 0;">
+📝 Report a Civic Issue
+</h3>
+<p style="color:#94a3b8;font-size:0.9rem;margin:0;">
+Describe the problem in English, Hindi, Marathi, or Hinglish. CivicSort will route it to the right municipal department.
+</p>
+</div>""", unsafe_allow_html=True)
+
+    form_col, guide_col = st.columns([3, 2], gap="large")
+    with form_col:
+        with st.form("citizen_complaint_form", clear_on_submit=True):
+            complaint_text = st.text_area(
+                "What is the civic issue?",
+                placeholder="Example: School ke paas pipe phoot gaya hai aur road par pani aa raha hai.",
+                height=150,
+                max_chars=1200,
+            )
+            field_left, field_right = st.columns(2)
+            with field_left:
+                complaint_language = st.selectbox(
+                    "Complaint language",
+                    options=["en", "hi", "mr", "hinglish"],
+                    format_func=lambda code: LANG_FLAGS[code],
+                )
+            with field_right:
+                landmark = st.text_input(
+                    "Nearest landmark (optional)",
+                    placeholder="e.g. Tilak Road school gate",
+                )
+            photo = st.file_uploader(
+                "Attach a photo (optional)",
+                type=["jpg", "jpeg", "png"],
+                help="A photo can help the vision-enabled triage path assess unclear reports.",
+            )
+            submitted = st.form_submit_button("🚀 Submit complaint for triage", use_container_width=True)
+
+        if submitted:
+            if len(complaint_text.strip()) < 8:
+                st.error("Please describe the issue in at least a few words.")
+            else:
+                with st.spinner("Classifying and routing your complaint..."):
+                    try:
+                        report = submit_complaint(
+                            complaint_text,
+                            complaint_language,
+                            landmark,
+                            photo,
+                        )
+                        st.session_state.last_submission = report
+                        load_data.clear()
+                        st.toast(
+                            f"Complaint {report['id']} routed to {report['department']}.",
+                            icon="✅",
+                        )
+                        # Run once more so the Operations Center immediately
+                        # reads the persisted report and updates its queue.
+                        st.rerun()
+                    except Exception as exc:
+                        st.error(f"The complaint could not be processed: {exc}")
+
+    with guide_col:
+        st.markdown("""<div class="complaint-box">
+<div class="section-title">What happens next?</div>
+<div style="color:#cbd5e1;line-height:1.7;font-size:0.9rem;">
+1. CivicSort identifies the issue category.<br>
+2. It assigns the responsible department.<br>
+3. It estimates urgency from low to critical.<br>
+4. The report appears in the operations queue.<br>
+5. Unclear reports are marked for human review.
+</div>
+</div>""", unsafe_allow_html=True)
+        st.caption("For this Ward-12 demo, submitted reports appear at the ward centre on the map. A production version can use GPS or geocoding.")
+
+    if st.session_state.last_submission:
+        report = st.session_state.last_submission
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("#### Latest routing result")
+        result_a, result_b, result_c, result_d = st.columns(4)
+        result_a.metric("Category", str(report["category"]).replace("_", " ").title())
+        result_b.metric("Department", report["department"])
+        result_c.metric("Urgency", str(report["urgency"]).title())
+        result_d.metric("Report ID", report["id"])
+        st.caption(report["severity_reason"])
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 3: DUPLICATE CLUSTER DEEP-DIVE
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_clusters:
     st.markdown("""<div style="margin-bottom:1.2rem;">

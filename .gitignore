@@ -5,3 +5,5 @@ __pycache__/
 *.pyc
 .DS_Store
 .vscode/
+data/uploads/
+data/submitted_complaints.json
