@@ -42,6 +42,7 @@ To prevent breaking bugs between dataset ground truth, AI triage, and dashboard 
 - [x] **Ward-12 Geo-coordinates:** Verified all 54 pins fall within Ward-12 boundary (18.515 to 18.526 N, 73.851 to 73.860 E).
 - [x] **Missing Photo Graceful Degradation:** Triage works seamlessly when `photo_path` is null.
 - [x] **Baseline Results Generation:** `eval/generate_mock_results.py` generates `results.json` unblocking Manas for dashboard development.
+- [x] **Live Dashboard Verification:** Interactive intake tested on `http://localhost:8501` with real-time Marathi and Hindi prompts.
 
 ---
 
