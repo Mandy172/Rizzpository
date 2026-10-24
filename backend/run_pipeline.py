@@ -115,7 +115,8 @@ def run_pipeline(
         print("\n[Clustering] Running semantic deduplication clustering (bge-m3 + HDBSCAN)...")
         all_results = cluster_complaints(all_results)
     except Exception as e:
-        print(f"[Warning] Clustering step failed: {e}")
+        print(f"[Error] Clustering step failed: {e}")
+        raise
 
     save_results(all_results, output_path)
     print(f"\nPipeline finished. Total: {len(results)} | Cached: {cached_count} | Newly Processed: {processed_count}")
