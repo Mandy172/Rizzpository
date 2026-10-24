@@ -1,6 +1,6 @@
 # Test notes — CivicFlow Triage & Routing
 
-Dataset & Testing Lead: **Kritagya Gour**
+Dataset & Testing Lead: **Kritagya Gour** ([@kritagyagour19](https://github.com/kritagyagour19))
 
 ---
 
