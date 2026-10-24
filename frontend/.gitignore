@@ -16,3 +16,4 @@ node_modules
 .DS_Store
 AGENTS.md
 next-env.d.ts
+tsconfig.tsbuildinfo

@@ -1,6 +1,7 @@
 'use client'
 
 import { Activity, Bell, ChevronDown, ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ThemeToggle } from './theme-toggle'
 
@@ -39,6 +40,9 @@ export function TopNav() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <Link href="/report" className="hidden rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted sm:inline-flex">
+            Report an issue
+          </Link>
           <div
             className="hidden items-center gap-2 rounded-full border border-border bg-card px-2.5 py-1 sm:flex"
             role="status"
