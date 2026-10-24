@@ -1,6 +1,6 @@
-import { ConsoleShell } from '@/components/console/console-shell'
+import { LiveConsole } from '@/components/console/live-console'
 import { complaints } from '@/lib/complaints-data'
 
 export default function Page() {
-  return <ConsoleShell complaints={complaints} />
+  return <LiveConsole initial={complaints} />
 }
