@@ -4,7 +4,7 @@ Multilingual civic complaint triage for municipal (PMC) operations.
 
 Citizens report problems in **English, Hindi, Marathi or Hinglish** at `/report`. Each report is triaged for category, department and urgency, duplicate reports are grouped, and officers get a prioritized queue at `/` with dispatch and resolve actions.
 
-**Team:** [add names]  
+**Team:** [Samarth G,Sujay Tudu,Manas Dhakulkar,Kritagy Gour]  
 **Event:** Hacktoberfest Hack Day
 
 ## How it works
