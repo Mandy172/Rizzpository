@@ -1,6 +1,14 @@
-import json, copy
+import copy
+import json
+import sys
 from collections import Counter
+from pathlib import Path
 from sklearn.metrics import adjusted_rand_score as ari
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from backend.cluster import cluster_complaints
 
 res = json.load(open("data/results.json", encoding="utf-8"))
