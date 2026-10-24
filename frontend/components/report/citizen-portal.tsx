@@ -111,7 +111,7 @@ export function CitizenPortal() {
     setBusy(true)
     setNotice('Analysing your report...')
     try {
-      const fromApi = await submitToApi(text.trim())
+      const fromApi = await submitToApi(text.trim(), landmark.trim())
       setResult({ ...fromApi, location_hint: landmark.trim() || fromApi.location_hint })
       setNotice(null)
       return

@@ -8,11 +8,11 @@ export async function fetchComplaints(): Promise<RawComplaint[]> {
   return res.json()
 }
 
-export async function submitComplaint(text: string): Promise<RawComplaint> {
+export async function submitComplaint(text: string, location?: string): Promise<RawComplaint> {
   const res = await fetch(`${API_URL}/triage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, location: location || null }),
   })
   if (!res.ok) throw new Error(`API ${res.status}`)
   return res.json()

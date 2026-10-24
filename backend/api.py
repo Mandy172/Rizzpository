@@ -140,6 +140,7 @@ def _rebuild() -> None:
 
 class TriageIn(BaseModel):
     text: str = Field(min_length=3, max_length=1000)
+    location: str | None = Field(default=None, max_length=200)
 
 
 @app.on_event("startup")
@@ -187,7 +188,7 @@ def triage(body: TriageIn):
             "department": out.get("department"),
             "urgency": out.get("urgency"),
             "urgency_reason": out.get("urgency_reason"),
-            "location": out.get("location"),
+            "location": (body.location or "").strip() or out.get("location"),
             "summary": out.get("summary"),
             "photo_severity": out.get("photo_severity"),
             "confidence": out.get("confidence"),
