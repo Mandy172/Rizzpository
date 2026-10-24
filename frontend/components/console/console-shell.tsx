@@ -1,7 +1,7 @@
 'use client'
 
-import { useDeferredValue, useMemo, useState } from 'react'
-import { buildTickets, matchesFilters, matchesQuery } from '@/lib/triage'
+import { useDeferredValue, useEffect, useMemo, useState } from 'react'
+import { buildTickets, CITIZEN_STORAGE_KEY, matchesFilters, matchesQuery } from '@/lib/triage'
 import type { Filters, RawComplaint, TicketStatus } from '@/lib/types'
 import { CategoryBreakdown } from './category-breakdown'
 import { EMPTY_FILTERS, FilterBar } from './filter-bar'
@@ -12,13 +12,24 @@ import { TopNav } from './top-nav'
 export function ConsoleShell({ complaints }: { complaints: RawComplaint[] }) {
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS)
   const [statuses, setStatuses] = useState<Record<string, TicketStatus>>({})
+  const [citizenReports, setCitizenReports] = useState<RawComplaint[]>([])
 
   const [query, setQuery] = useState('')
   const deferredQuery = useDeferredValue(query)
 
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem(CITIZEN_STORAGE_KEY) ?? '[]')
+      if (Array.isArray(stored)) setCitizenReports(stored)
+    } catch {
+      setCitizenReports([])
+    }
+  }, [])
+
+  const allReports = useMemo(() => [...citizenReports, ...complaints], [citizenReports, complaints])
   const filtered = useMemo(
-    () => complaints.filter((c) => matchesFilters(c, filters) && matchesQuery(c, deferredQuery)),
-    [complaints, filters, deferredQuery],
+    () => allReports.filter((c) => matchesFilters(c, filters) && matchesQuery(c, deferredQuery)),
+    [allReports, filters, deferredQuery],
   )
   const tickets = useMemo(() => buildTickets(filtered), [filtered])
 

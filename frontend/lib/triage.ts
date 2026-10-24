@@ -1,5 +1,17 @@
 import type { Category, Department, Filters, Language, RawComplaint, Ticket } from './types'
 
+export const CITIZEN_STORAGE_KEY = 'civicsort-citizen-submissions'
+
+export type CitizenTriage = {
+  category: Category
+  department: Department
+  severity: number
+  urgency: 'low' | 'medium' | 'high' | 'critical'
+  severityReason: string
+  needsReview: boolean
+  confidence: number
+}
+
 export const CATEGORY_META: Record<Category, { label: string; dot: string; bar: string }> = {
   road_damage: { label: 'Roads', dot: 'bg-cat-roads', bar: 'bg-cat-roads' },
   water_leak: { label: 'Water leak', dot: 'bg-cat-water', bar: 'bg-cat-water' },
@@ -139,4 +151,96 @@ export function ticketTitle(t: Ticket) {
     return hint.charAt(0).toUpperCase() + hint.slice(1)
   }
   return CATEGORY_META[asCategory(t.primary.category)].label
+}
+
+/**
+ * Browser-safe version of CivicSort's fast triage path. The Python pipeline
+ * remains available for model-backed and photo-supported reports; this keeps
+ * the citizen demo responsive even when a local model is not running.
+ */
+export function triageCitizenComplaint(text: string): CitizenTriage {
+  const value = text.toLowerCase()
+  const has = (...patterns: string[]) => patterns.some((pattern) => value.includes(pattern))
+  const critical = has('open manhole', 'मैनहोल', 'मॅनहोल', 'falling', 'गिर रहे', 'घसरत')
+
+  if (has('open manhole', 'मैनहोल', 'मॅनहोल')) {
+    return {
+      category: 'other',
+      department: 'drainage',
+      severity: 5,
+      urgency: 'critical',
+      severityReason: 'An open manhole creates an immediate fall and road-safety risk.',
+      needsReview: false,
+      confidence: 0.94,
+    }
+  }
+
+  if (has('pothole', 'gaddha', 'खड्डा', 'गड्ढा', 'crater', 'speed breaker', 'स्पीड ब्रेकर', 'broken road')) {
+    return {
+      category: 'road_damage',
+      department: 'roads',
+      severity: critical ? 5 : 4,
+      urgency: critical ? 'critical' : 'high',
+      severityReason: critical ? 'Road damage presents an immediate accident risk.' : 'Road damage can disrupt traffic and create a public safety risk.',
+      needsReview: false,
+      confidence: 0.92,
+    }
+  }
+  if (has('pipe', 'water leak', 'water line', 'पानी की पाइप', 'पाण्याची पाईप', 'रिसाव', 'गळत')) {
+    const urgent = has('continuous', 'continuously', 'flood', 'भर रहा', 'सतत', 'लगातार')
+    return {
+      category: 'water_leak',
+      department: 'water_supply',
+      severity: urgent ? 4 : 3,
+      urgency: urgent ? 'high' : 'medium',
+      severityReason: urgent ? 'An active leak can waste water and make nearby paths unsafe.' : 'The water-supply issue needs scheduled maintenance.',
+      needsReview: false,
+      confidence: 0.91,
+    }
+  }
+  if (has('garbage', 'kachra', 'कचरा', 'कूड़ा', 'trash', 'waste', 'smell', 'दुर्गंधी')) {
+    const urgent = has('fire', 'आग', 'smell', 'badbu', 'दुर्गंधी', 'four days', '3 din')
+    return {
+      category: 'garbage',
+      department: 'sanitation',
+      severity: urgent ? 4 : 3,
+      urgency: urgent ? 'high' : 'medium',
+      severityReason: urgent ? 'Uncollected waste can create a public-health concern.' : 'The report needs standard sanitation collection.',
+      needsReview: false,
+      confidence: 0.9,
+    }
+  }
+  if (has('drain', 'nala', 'नाली', 'गटार', 'sewage', 'drainage', 'overflow')) {
+    const urgent = has('overflow', 'flood', 'road par pani', 'सड़क पर', 'रस्त्यावर')
+    return {
+      category: 'drainage',
+      department: 'drainage',
+      severity: urgent ? 4 : 3,
+      urgency: urgent ? 'high' : 'medium',
+      severityReason: urgent ? 'Overflowing drainage can affect public safety and access.' : 'The drain needs municipal maintenance.',
+      needsReview: false,
+      confidence: 0.9,
+    }
+  }
+  if (has('streetlight', 'street light', 'light', 'lamp', 'लाईट', 'लाइट', 'flicker', 'blink')) {
+    const urgent = has('dark lane', 'अंधेरी', 'visibility poor', 'night')
+    return {
+      category: 'streetlight',
+      department: 'electrical',
+      severity: urgent ? 4 : 3,
+      urgency: urgent ? 'high' : 'medium',
+      severityReason: urgent ? 'Poor lighting can create a night-time safety concern.' : 'The lighting issue needs an electrical repair.',
+      needsReview: false,
+      confidence: 0.88,
+    }
+  }
+  return {
+    category: 'other',
+    department: 'other',
+    severity: critical ? 5 : 3,
+    urgency: critical ? 'critical' : 'medium',
+    severityReason: 'This report needs an operator to confirm the responsible department.',
+    needsReview: true,
+    confidence: 0.62,
+  }
 }
