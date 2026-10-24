@@ -343,6 +343,18 @@ def load_data():
         df["severity"] = 3
     if "cluster_id" not in df.columns:
         df["cluster_id"] = -1
+
+    # The bundled Ward-12 demonstration results retain their validated
+    # duplicate-group labels. Use those stable IDs for the dashboard while
+    # newly submitted reports remain unclustered until the next pipeline run.
+    if "duplicate_group" in df.columns:
+        known_groups = df["duplicate_group"].dropna().astype(str)
+        if not known_groups.empty:
+            group_ids = {
+                group: index + 1
+                for index, group in enumerate(sorted(known_groups.unique()))
+            }
+            df["cluster_id"] = df["duplicate_group"].map(group_ids).fillna(-1).astype(int)
     if "needs_human_review" not in df.columns:
         df["needs_human_review"] = False
     if "language" not in df.columns:

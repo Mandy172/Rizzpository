@@ -185,16 +185,43 @@ def cluster_embeddings(
 def cluster_complaints(
     complaints: List[dict],
     min_cluster_size: int = 2,
-    distance_threshold: float = 0.35,
+    distance_threshold: float = 0.20,
 ) -> List[dict]:
-    """Take a list of complaint dicts, calculate clusters, and return enriched dicts."""
-    texts = [c.get("text", c.get("summary", "")) for c in complaints]
-    embeddings = embed_texts(texts)
-    labels = cluster_embeddings(
-        embeddings,
-        min_cluster_size=min_cluster_size,
-        distance_threshold=distance_threshold,
-    )
+    """Cluster reports within their predicted service area and return enriched records.
+
+    Triage runs before deduplication, so a pothole and a water leak should never
+    be grouped just because both reports mention the same landmark. Partitioning
+    by category and department preserves that operational boundary and reduces
+    false duplicate groups.
+    """
+    labels = np.full(len(complaints), -1, dtype=int)
+    service_areas: Dict[Tuple[str, str], List[int]] = {}
+    for index, complaint in enumerate(complaints):
+        key = (
+            str(complaint.get("category", "other")),
+            str(complaint.get("department", "unknown")),
+        )
+        service_areas.setdefault(key, []).append(index)
+
+    next_cluster_id = 0
+    for indices in service_areas.values():
+        if len(indices) < min_cluster_size:
+            continue
+        texts = [complaints[index].get("text", complaints[index].get("summary", "")) for index in indices]
+        group_embeddings = embed_texts(texts)
+        group_labels = cluster_embeddings(
+            group_embeddings,
+            min_cluster_size=min_cluster_size,
+            distance_threshold=distance_threshold,
+        )
+        local_to_global: Dict[int, int] = {}
+        for index, local_label in zip(indices, group_labels):
+            if local_label < 0:
+                continue
+            if int(local_label) not in local_to_global:
+                local_to_global[int(local_label)] = next_cluster_id
+                next_cluster_id += 1
+            labels[index] = local_to_global[int(local_label)]
 
     # Compute group sizes
     label_counts: Dict[int, int] = {}
@@ -313,7 +340,7 @@ if __name__ == "__main__":
     parser.add_argument("--input", default="data/results.json", help="Input JSON complaints path")
     parser.add_argument("--output", default="data/results.json", help="Output JSON path")
     parser.add_argument("--min-cluster", type=int, default=2, help="Minimum complaints per cluster")
-    parser.add_argument("--threshold", type=float, default=0.35, help="Cosine distance threshold")
+    parser.add_argument("--threshold", type=float, default=0.20, help="Cosine distance threshold")
     parser.add_argument("--eval", default="data/complaints.json", help="Ground truth file for validation")
     args = parser.parse_args()
 
