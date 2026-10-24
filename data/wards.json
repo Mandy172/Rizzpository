@@ -4,10 +4,10 @@
   "city": "Pune",
   "center": {"latitude": 18.5204, "longitude": 73.8567},
   "departments": [
-    {"name": "Roads", "contact": "roads@civicflow.demo", "handles": ["road_damage"]},
+    {"name": "Roads", "contact": "roads@civicflow.demo", "handles": ["road_damage", "other"]},
     {"name": "Water Supply", "contact": "water@civicflow.demo", "handles": ["water_leak"]},
     {"name": "Sanitation", "contact": "sanitation@civicflow.demo", "handles": ["garbage", "other"]},
     {"name": "Electrical", "contact": "electrical@civicflow.demo", "handles": ["streetlight"]},
-    {"name": "Drainage", "contact": "drainage@civicflow.demo", "handles": ["drainage"]}
+    {"name": "Drainage", "contact": "drainage@civicflow.demo", "handles": ["drainage", "other"]}
   ]
 }
