@@ -13,23 +13,13 @@
       "department": "Water Supply"
     },
     "duplicate_group": "DUP-01",
-    "cluster_id": "DUP-01",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "high",
-      "urgency_reason": "Continuous water leakage can lead to localized flooding and significant water wastage.",
-      "location": "near the school gate on Tilak Road",
-      "summary": "Continuous water leakage reported near the school gate on Tilak Road."
-    },
     "category": "water_leak",
     "department": "Water Supply",
     "urgency": "high",
-    "urgency_reason": "Continuous water leakage can lead to localized flooding and significant water wastage.",
-    "location": "near the school gate on Tilak Road",
-    "summary": "Continuous water leakage reported near the school gate on Tilak Road.",
-    "photo_severity": "medium"
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "the school gate on Tilak Road",
+    "summary": "Automated rule triage: Water leak complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-002",
@@ -45,23 +35,13 @@
       "department": "Roads"
     },
     "duplicate_group": "DUP-02",
-    "cluster_id": "DUP-02",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "critical",
-      "urgency_reason": "The pothole is causing active accidents involving two-wheelers, posing an immediate safety hazard.",
-      "location": "outside the bus stop",
-      "summary": "A deep pothole outside a bus stop is causing two-wheelers to crash."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "critical",
-    "urgency_reason": "The pothole is causing active accidents involving two-wheelers, posing an immediate safety hazard.",
-    "location": "outside the bus stop",
-    "summary": "A deep pothole outside a bus stop is causing two-wheelers to crash.",
-    "photo_severity": "high"
+    "urgency_reason": "Flagged critical due to high-risk hazards or active accidents mentioned in text.",
+    "location": "the bus stop is causing two-wheelers to fall",
+    "summary": "Automated rule triage: Road damage complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-003",
@@ -77,23 +57,13 @@
       "department": "Sanitation"
     },
     "duplicate_group": "DUP-03",
-    "cluster_id": "DUP-03",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "high",
-      "urgency_reason": "Uncollected garbage for four days has resulted in an overflowing dumpster and litter on the street, posing a sanitation hazard.",
-      "location": "market corner",
-      "summary": "Garbage has not been collected from the market corner for four days."
-    },
     "category": "garbage",
     "department": "Sanitation",
     "urgency": "high",
-    "urgency_reason": "Uncollected garbage for four days has resulted in an overflowing dumpster and litter on the street, posing a sanitation hazard.",
-    "location": "market corner",
-    "summary": "Garbage has not been collected from the market corner for four days.",
-    "photo_severity": "high"
+    "urgency_reason": "Garbage left for several days needs prompt sanitation collection.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-004",
@@ -109,23 +79,13 @@
       "department": "Electrical"
     },
     "duplicate_group": "DUP-04",
-    "cluster_id": "DUP-04",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "medium",
-      "urgency_reason": "The streetlight is non-functional, which is a routine maintenance issue.",
-      "location": "public park entrance",
-      "summary": "The streetlight at the public park entrance has been non-functional for a week."
-    },
     "category": "streetlight",
     "department": "Electrical",
     "urgency": "medium",
-    "urgency_reason": "The streetlight is non-functional, which is a routine maintenance issue.",
-    "location": "public park entrance",
-    "summary": "The streetlight at the public park entrance has been non-functional for a week.",
-    "photo_severity": "low"
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "the public park entrance has been off all week",
+    "summary": "Automated rule triage: Streetlight complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-005",
@@ -141,23 +101,13 @@
       "department": "Drainage"
     },
     "duplicate_group": "DUP-05",
-    "cluster_id": "DUP-05",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "high",
-      "urgency_reason": "The blocked drain is causing water to overflow, which can lead to local flooding.",
-      "location": "Lane 5",
-      "summary": "The roadside drain beside Lane 5 is blocked and water is overflowing."
-    },
     "category": "drainage",
     "department": "Drainage",
     "urgency": "high",
-    "urgency_reason": "The blocked drain is causing water to overflow, which can lead to local flooding.",
-    "location": "Lane 5",
-    "summary": "The roadside drain beside Lane 5 is blocked and water is overflowing.",
-    "photo_severity": "medium"
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Drainage complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-006",
@@ -173,23 +123,13 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-006",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "other",
-      "department": "Roads",
-      "severity": "high",
-      "urgency_reason": "A fallen tree is partially obstructing the road, causing a major disruption to traffic.",
-      "location": "near the library",
-      "summary": "A large fallen tree is blocking half of the road near the library."
-    },
     "category": "other",
     "department": "Roads",
     "urgency": "high",
-    "urgency_reason": "A fallen tree is partially obstructing the road, causing a major disruption to traffic.",
-    "location": "near the library",
-    "summary": "A large fallen tree is blocking half of the road near the library.",
-    "photo_severity": "medium"
+    "urgency_reason": "A fallen tree needs a prompt road obstruction review.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Other complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-007",
@@ -205,22 +145,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-007",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "high",
-      "urgency_reason": "The leaking water is creating a slippery footpath, posing a safety hazard to pedestrians.",
-      "location": "Building C",
-      "summary": "A water pipe leak near Building C is making the footpath slippery."
-    },
     "category": "water_leak",
     "department": "Water Supply",
     "urgency": "high",
-    "urgency_reason": "The leaking water is creating a slippery footpath, posing a safety hazard to pedestrians.",
-    "location": "Building C",
-    "summary": "A water pipe leak near Building C is making the footpath slippery.",
+    "urgency_reason": "An active water-line leak needs prompt repair to prevent water loss and a slippery footpath.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -237,22 +167,12 @@
       "department": "Roads"
     },
     "duplicate_group": "DUP-02",
-    "cluster_id": "DUP-02",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "critical",
-      "urgency_reason": "A dangerous crater at a busy bus stop crossing poses an immediate risk of accidents.",
-      "location": "bus stop crossing",
-      "summary": "A dangerous crater has been reported at the bus stop crossing."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "critical",
-    "urgency_reason": "A dangerous crater at a busy bus stop crossing poses an immediate risk of accidents.",
-    "location": "bus stop crossing",
-    "summary": "A dangerous crater has been reported at the bus stop crossing.",
+    "urgency_reason": "Flagged critical due to high-risk hazards or active accidents mentioned in text.",
+    "location": "the bus stop crossing",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -269,22 +189,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-009",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "medium",
-      "urgency_reason": "The community bin is overflowing and trash is spreading on the footpath, requiring collection.",
-      "location": "near the clinic",
-      "summary": "Overflowing community bin near the clinic with trash spreading on the footpath."
-    },
     "category": "garbage",
     "department": "Sanitation",
     "urgency": "medium",
-    "urgency_reason": "The community bin is overflowing and trash is spreading on the footpath, requiring collection.",
-    "location": "near the clinic",
-    "summary": "Overflowing community bin near the clinic with trash spreading on the footpath.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "the clinic is full and trash is spreading on the footpath",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -301,22 +211,12 @@
       "department": "Electrical"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-010",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "low",
-      "urgency_reason": "The issue is a flickering streetlight, which is a minor maintenance requirement.",
-      "location": "pole 18 near the temple",
-      "summary": "Streetlight pole 18 near the temple is flickering every night."
-    },
     "category": "streetlight",
     "department": "Electrical",
     "urgency": "low",
-    "urgency_reason": "The issue is a flickering streetlight, which is a minor maintenance requirement.",
-    "location": "pole 18 near the temple",
-    "summary": "Streetlight pole 18 near the temple is flickering every night.",
+    "urgency_reason": "An intermittently flickering light can be handled as a routine electrical repair.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Streetlight complaint.",
     "photo_severity": null
   },
   {
@@ -333,22 +233,12 @@
       "department": "Drainage"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-011",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "medium",
-      "urgency_reason": "The clogged storm drain is causing rainwater to accumulate on the road surface.",
-      "location": "outside the pharmacy",
-      "summary": "Rainwater is pooling on the road due to a clogged storm drain outside the pharmacy."
-    },
     "category": "drainage",
     "department": "Drainage",
     "urgency": "medium",
-    "urgency_reason": "The clogged storm drain is causing rainwater to accumulate on the road surface.",
-    "location": "outside the pharmacy",
-    "summary": "Rainwater is pooling on the road due to a clogged storm drain outside the pharmacy.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "the pharmacy is clogged",
+    "summary": "Automated rule triage: Drainage complaint.",
     "photo_severity": null
   },
   {
@@ -365,22 +255,12 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-012",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "medium",
-      "urgency_reason": "Broken pavement slabs pose a tripping hazard to pedestrians.",
-      "location": "Gandhi Chowk",
-      "summary": "Broken pavement slabs at Gandhi Chowk are creating a safety hazard for pedestrians."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "medium",
-    "urgency_reason": "Broken pavement slabs pose a tripping hazard to pedestrians.",
-    "location": "Gandhi Chowk",
-    "summary": "Broken pavement slabs at Gandhi Chowk are creating a safety hazard for pedestrians.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "are unsafe for pedestrians",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -397,22 +277,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": "DUP-01",
-    "cluster_id": "DUP-01",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "high",
-      "urgency_reason": "A leaking water line leads to significant water wastage and potential disruption of the local water supply.",
-      "location": "outside the school on Tilak Road",
-      "summary": "There is a leaking water line located outside the school on Tilak Road."
-    },
     "category": "water_leak",
     "department": "Water Supply",
     "urgency": "high",
-    "urgency_reason": "A leaking water line leads to significant water wastage and potential disruption of the local water supply.",
-    "location": "outside the school on Tilak Road",
-    "summary": "There is a leaking water line located outside the school on Tilak Road.",
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "the school on Tilak Road",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -429,22 +299,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": "DUP-03",
-    "cluster_id": "DUP-03",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "high",
-      "urgency_reason": "Accumulated rotting waste creates a public health hazard and causes significant odor issues.",
-      "location": "market corner",
-      "summary": "Rotting waste bags are piled up at the market corner, causing a foul smell."
-    },
     "category": "garbage",
     "department": "Sanitation",
     "urgency": "high",
-    "urgency_reason": "Accumulated rotting waste creates a public health hazard and causes significant odor issues.",
-    "location": "market corner",
-    "summary": "Rotting waste bags are piled up at the market corner, causing a foul smell.",
+    "urgency_reason": "Rotting waste or a trash fire needs prompt sanitation response.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -461,22 +321,12 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-015",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "other",
-      "department": "unknown",
-      "severity": "medium",
-      "urgency_reason": "The abandoned vehicle is located in front of a healthcare facility, potentially obstructing access or causing a nuisance.",
-      "location": "in front of the health centre",
-      "summary": "An abandoned vehicle has been parked in front of the health centre for weeks."
-    },
     "category": "other",
-    "department": "unknown",
-    "urgency": "medium",
-    "urgency_reason": "The abandoned vehicle is located in front of a healthcare facility, potentially obstructing access or causing a nuisance.",
-    "location": "in front of the health centre",
-    "summary": "An abandoned vehicle has been parked in front of the health centre for weeks.",
+    "department": "Roads",
+    "urgency": "low",
+    "urgency_reason": "An abandoned vehicle needs a low-priority road obstruction review.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Other complaint.",
     "photo_severity": null
   },
   {
@@ -493,22 +343,12 @@
       "department": "Electrical"
     },
     "duplicate_group": "DUP-04",
-    "cluster_id": "DUP-04",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "medium",
-      "urgency_reason": "A non-working streetlight is a standard maintenance issue that affects visibility and safety.",
-      "location": "park gate",
-      "summary": "The lamp near the park gate is non-functional following the rain."
-    },
     "category": "streetlight",
     "department": "Electrical",
     "urgency": "medium",
-    "urgency_reason": "A non-working streetlight is a standard maintenance issue that affects visibility and safety.",
-    "location": "park gate",
-    "summary": "The lamp near the park gate is non-functional following the rain.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Streetlight complaint.",
     "photo_severity": null
   },
   {
@@ -525,22 +365,12 @@
       "department": "Drainage"
     },
     "duplicate_group": "DUP-05",
-    "cluster_id": "DUP-05",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "high",
-      "urgency_reason": "Water is overflowing from a blocked gutter onto the street, creating a hazard for commuters.",
-      "location": "Lane 5",
-      "summary": "Drainage water is overflowing onto the street due to a blocked gutter in Lane 5."
-    },
     "category": "drainage",
     "department": "Drainage",
     "urgency": "high",
-    "urgency_reason": "Water is overflowing from a blocked gutter onto the street, creating a hazard for commuters.",
-    "location": "Lane 5",
-    "summary": "Drainage water is overflowing onto the street due to a blocked gutter in Lane 5.",
+    "urgency_reason": "Drain water reaching a street needs prompt drainage clearance.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Drainage complaint.",
     "photo_severity": null
   },
   {
@@ -557,22 +387,12 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-018",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "medium",
-      "urgency_reason": "Loose tiles near the playground pose a tripping risk to pedestrians.",
-      "location": "near the playground",
-      "summary": "Loose road tiles near the playground are creating a trip hazard."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "medium",
-    "urgency_reason": "Loose tiles near the playground pose a tripping risk to pedestrians.",
-    "location": "near the playground",
-    "summary": "Loose road tiles near the playground are creating a trip hazard.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "the playground are creating a trip hazard",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -589,22 +409,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": "DUP-01",
-    "cluster_id": "DUP-01",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "high",
-      "urgency_reason": "Continuous water leakage near a school gate can lead to significant water wastage and potential flooding in a high-traffic area.",
-      "location": "Near the school gate",
-      "summary": "Continuous water pipe leakage near the school gate."
-    },
     "category": "water_leak",
     "department": "Water Supply",
     "urgency": "high",
-    "urgency_reason": "Continuous water leakage near a school gate can lead to significant water wastage and potential flooding in a high-traffic area.",
-    "location": "Near the school gate",
-    "summary": "Continuous water pipe leakage near the school gate.",
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -621,22 +431,12 @@
       "department": "Roads"
     },
     "duplicate_group": "DUP-02",
-    "cluster_id": "DUP-02",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "critical",
-      "urgency_reason": "The pothole is causing motorcyclists to fall, posing an immediate danger to life and safety.",
-      "location": "In front of the bus stop",
-      "summary": "A large pothole in front of the bus stop is causing accidents for motorcyclists."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "critical",
-    "urgency_reason": "The pothole is causing motorcyclists to fall, posing an immediate danger to life and safety.",
-    "location": "In front of the bus stop",
-    "summary": "A large pothole in front of the bus stop is causing accidents for motorcyclists.",
+    "urgency_reason": "Flagged critical due to high-risk hazards or active accidents mentioned in text.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -653,22 +453,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": "DUP-03",
-    "cluster_id": "DUP-03",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "medium",
-      "urgency_reason": "Garbage has remained uncollected at the market corner for four days.",
-      "location": "Market corner",
-      "summary": "Garbage has not been collected from the market corner for four days."
-    },
     "category": "garbage",
     "department": "Sanitation",
-    "urgency": "medium",
-    "urgency_reason": "Garbage has remained uncollected at the market corner for four days.",
-    "location": "Market corner",
-    "summary": "Garbage has not been collected from the market corner for four days.",
+    "urgency": "high",
+    "urgency_reason": "Garbage left for several days needs prompt sanitation collection.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -685,22 +475,12 @@
       "department": "Electrical"
     },
     "duplicate_group": "DUP-04",
-    "cluster_id": "DUP-04",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "medium",
-      "urgency_reason": "The street light at the park gate has been non-functional for a week, affecting visibility.",
-      "location": "Park gate",
-      "summary": "The street light at the park gate has been non-functional for one week."
-    },
     "category": "streetlight",
     "department": "Electrical",
     "urgency": "medium",
-    "urgency_reason": "The street light at the park gate has been non-functional for a week, affecting visibility.",
-    "location": "Park gate",
-    "summary": "The street light at the park gate has been non-functional for one week.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Streetlight complaint.",
     "photo_severity": null
   },
   {
@@ -717,22 +497,12 @@
       "department": "Drainage"
     },
     "duplicate_group": "DUP-05",
-    "cluster_id": "DUP-05",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "high",
-      "urgency_reason": "The clogged drain is causing wastewater to overflow onto the street, creating sanitation issues.",
-      "location": "Lane 5",
-      "summary": "Drainage blockage in Lane 5 causing dirty water to overflow onto the road."
-    },
     "category": "drainage",
     "department": "Drainage",
     "urgency": "high",
-    "urgency_reason": "The clogged drain is causing wastewater to overflow onto the street, creating sanitation issues.",
-    "location": "Lane 5",
-    "summary": "Drainage blockage in Lane 5 causing dirty water to overflow onto the road.",
+    "urgency_reason": "Drain water reaching a street needs prompt drainage clearance.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Drainage complaint.",
     "photo_severity": null
   },
   {
@@ -749,22 +519,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-024",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "low",
-      "urgency_reason": "The complaint describes a slow leak, which is a minor maintenance issue.",
-      "location": "Outside the community hall",
-      "summary": "Slow water leakage from a water line outside the community hall."
-    },
     "category": "water_leak",
     "department": "Water Supply",
-    "urgency": "low",
-    "urgency_reason": "The complaint describes a slow leak, which is a minor maintenance issue.",
-    "location": "Outside the community hall",
-    "summary": "Slow water leakage from a water line outside the community hall.",
+    "urgency": "medium",
+    "urgency_reason": "A slow water leak needs scheduled repair before it worsens.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -781,22 +541,12 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-025",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "medium",
-      "urgency_reason": "The broken road surface and protruding stones pose a trip hazard and potential risk to vehicles.",
-      "location": "Near the ward office",
-      "summary": "The road surface near the ward office is broken with protruding stones."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "medium",
-    "urgency_reason": "The broken road surface and protruding stones pose a trip hazard and potential risk to vehicles.",
-    "location": "Near the ward office",
-    "summary": "The road surface near the ward office is broken with protruding stones.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -813,22 +563,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-026",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "medium",
-      "urgency_reason": "The dustbin is overflowing and garbage is spreading onto the road, requiring cleanup.",
-      "location": "In front of the school",
-      "summary": "Garbage is overflowing from a dustbin in front of the school and spreading onto the road."
-    },
     "category": "garbage",
     "department": "Sanitation",
     "urgency": "medium",
-    "urgency_reason": "The dustbin is overflowing and garbage is spreading onto the road, requiring cleanup.",
-    "location": "In front of the school",
-    "summary": "Garbage is overflowing from a dustbin in front of the school and spreading onto the road.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -845,22 +585,12 @@
       "department": "Electrical"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-027",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "medium",
-      "urgency_reason": "Broken street lights in an alley make it difficult and potentially unsafe for pedestrians to walk at night.",
-      "location": "अंधेरी गली",
-      "summary": "Two street lights are non-functional in the dark alley, making nighttime movement difficult."
-    },
     "category": "streetlight",
     "department": "Electrical",
-    "urgency": "medium",
-    "urgency_reason": "Broken street lights in an alley make it difficult and potentially unsafe for pedestrians to walk at night.",
-    "location": "अंधेरी गली",
-    "summary": "Two street lights are non-functional in the dark alley, making nighttime movement difficult.",
+    "urgency": "high",
+    "urgency_reason": "Multiple failed lights in a dark lane create a serious night-time safety risk.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Streetlight complaint.",
     "photo_severity": null
   },
   {
@@ -877,22 +607,12 @@
       "department": "Drainage"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-028",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "critical",
-      "urgency_reason": "A broken drain cover poses a severe safety hazard to pedestrians and vehicles, especially when obscured by water.",
-      "location": "bus depot",
-      "summary": "The drain cover near the bus depot is broken, causing water to accumulate after the rain."
-    },
     "category": "drainage",
     "department": "Drainage",
-    "urgency": "critical",
-    "urgency_reason": "A broken drain cover poses a severe safety hazard to pedestrians and vehicles, especially when obscured by water.",
-    "location": "bus depot",
-    "summary": "The drain cover near the bus depot is broken, causing water to accumulate after the rain.",
+    "urgency": "high",
+    "urgency_reason": "A broken drain cover with pooling water requires prompt drainage repair.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Drainage complaint.",
     "photo_severity": null
   },
   {
@@ -909,22 +629,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-029",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "other",
-      "department": "unknown",
-      "severity": "high",
-      "urgency_reason": "An injured stray dog near children poses a significant safety risk.",
-      "location": "park",
-      "summary": "An injured stray dog is roaming in the park near children."
-    },
     "category": "other",
-    "department": "unknown",
-    "urgency": "high",
-    "urgency_reason": "An injured stray dog near children poses a significant safety risk.",
-    "location": "park",
-    "summary": "An injured stray dog is roaming in the park near children.",
+    "department": "Sanitation",
+    "urgency": "medium",
+    "urgency_reason": "An injured stray animal requires municipal sanitation or animal-control follow-up.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Other complaint.",
     "photo_severity": null
   },
   {
@@ -941,22 +651,12 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-030",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "critical",
-      "urgency_reason": "The road damage is affecting the movement of emergency ambulances, which poses a risk to patient safety and medical response times.",
-      "location": "In front of the hospital",
-      "summary": "Increasing road cracks in front of the hospital are causing jolts to ambulances."
-    },
     "category": "road_damage",
     "department": "Roads",
-    "urgency": "critical",
-    "urgency_reason": "The road damage is affecting the movement of emergency ambulances, which poses a risk to patient safety and medical response times.",
-    "location": "In front of the hospital",
-    "summary": "Increasing road cracks in front of the hospital are causing jolts to ambulances.",
+    "urgency": "high",
+    "urgency_reason": "Road damage is disrupting emergency or normal vehicle movement.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -973,22 +673,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-031",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "high",
-      "urgency_reason": "Continuous water wastage from a public tap requires prompt action to prevent significant resource loss.",
-      "location": "near the temple",
-      "summary": "Continuous water leakage from a public tap near the temple."
-    },
     "category": "water_leak",
     "department": "Water Supply",
-    "urgency": "high",
-    "urgency_reason": "Continuous water wastage from a public tap requires prompt action to prevent significant resource loss.",
-    "location": "near the temple",
-    "summary": "Continuous water leakage from a public tap near the temple.",
+    "urgency": "medium",
+    "urgency_reason": "A continuously running public tap needs scheduled water-supply repair.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -1005,22 +695,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-032",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "high",
-      "urgency_reason": "An active fire in a garbage pile is emitting smoke, posing a potential health and safety hazard.",
-      "location": "Behind the medicine shop",
-      "summary": "Smoke is being emitted from a fire in the garbage located behind a medicine shop."
-    },
     "category": "garbage",
     "department": "Sanitation",
     "urgency": "high",
-    "urgency_reason": "An active fire in a garbage pile is emitting smoke, posing a potential health and safety hazard.",
-    "location": "Behind the medicine shop",
-    "summary": "Smoke is being emitted from a fire in the garbage located behind a medicine shop.",
+    "urgency_reason": "Rotting waste or a trash fire needs prompt sanitation response.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -1037,22 +717,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": "DUP-01",
-    "cluster_id": "DUP-01",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "medium",
-      "urgency_reason": "Continuous water leakage near a school gate requires maintenance to prevent water wastage.",
-      "location": "Near the school gate",
-      "summary": "A water pipe is leaking continuously near the school gate."
-    },
     "category": "water_leak",
     "department": "Water Supply",
-    "urgency": "medium",
-    "urgency_reason": "Continuous water leakage near a school gate requires maintenance to prevent water wastage.",
-    "location": "Near the school gate",
-    "summary": "A water pipe is leaking continuously near the school gate.",
+    "urgency": "high",
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -1069,22 +739,12 @@
       "department": "Roads"
     },
     "duplicate_group": "DUP-02",
-    "cluster_id": "DUP-02",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "critical",
-      "urgency_reason": "The large pothole is causing two-wheelers to skid, posing an immediate safety hazard to commuters.",
-      "location": "Near the bus stop",
-      "summary": "A large pothole near the bus stop is causing two-wheelers to skid."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "critical",
-    "urgency_reason": "The large pothole is causing two-wheelers to skid, posing an immediate safety hazard to commuters.",
-    "location": "Near the bus stop",
-    "summary": "A large pothole near the bus stop is causing two-wheelers to skid.",
+    "urgency_reason": "Flagged critical due to high-risk hazards or active accidents mentioned in text.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -1101,22 +761,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": "DUP-03",
-    "cluster_id": "DUP-03",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "medium",
-      "urgency_reason": "Garbage has not been collected at the market corner for four days, which is a lapse in regular maintenance.",
-      "location": "Corner of the market",
-      "summary": "Garbage has not been collected at the market corner for four days."
-    },
     "category": "garbage",
     "department": "Sanitation",
-    "urgency": "medium",
-    "urgency_reason": "Garbage has not been collected at the market corner for four days, which is a lapse in regular maintenance.",
-    "location": "Corner of the market",
-    "summary": "Garbage has not been collected at the market corner for four days.",
+    "urgency": "high",
+    "urgency_reason": "Garbage left for several days needs prompt sanitation collection.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -1133,22 +783,12 @@
       "department": "Electrical"
     },
     "duplicate_group": "DUP-04",
-    "cluster_id": "DUP-04",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "medium",
-      "urgency_reason": "The streetlight at the park entrance is non-functional and requires standard maintenance.",
-      "location": "Park entrance",
-      "summary": "The streetlight at the park entrance is not working."
-    },
     "category": "streetlight",
     "department": "Electrical",
     "urgency": "medium",
-    "urgency_reason": "The streetlight at the park entrance is non-functional and requires standard maintenance.",
-    "location": "Park entrance",
-    "summary": "The streetlight at the park entrance is not working.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Streetlight complaint.",
     "photo_severity": null
   },
   {
@@ -1165,22 +805,12 @@
       "department": "Drainage"
     },
     "duplicate_group": "DUP-05",
-    "cluster_id": "DUP-05",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "high",
-      "urgency_reason": "The clogged drain is causing water to overflow onto the road, which can lead to flooding and traffic hazards.",
-      "location": "Lane 5",
-      "summary": "The drain in Lane 5 is clogged and water is overflowing onto the road."
-    },
     "category": "drainage",
     "department": "Drainage",
     "urgency": "high",
-    "urgency_reason": "The clogged drain is causing water to overflow onto the road, which can lead to flooding and traffic hazards.",
-    "location": "Lane 5",
-    "summary": "The drain in Lane 5 is clogged and water is overflowing onto the road.",
+    "urgency_reason": "Drain water reaching a street needs prompt drainage clearance.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Drainage complaint.",
     "photo_severity": null
   },
   {
@@ -1197,22 +827,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-038",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "low",
-      "urgency_reason": "The issue describes a slow drip from a water valve, which is a minor maintenance matter.",
-      "location": "near the temple",
-      "summary": "Water is dripping from a valve located near the temple."
-    },
     "category": "water_leak",
     "department": "Water Supply",
     "urgency": "low",
-    "urgency_reason": "The issue describes a slow drip from a water valve, which is a minor maintenance matter.",
-    "location": "near the temple",
-    "summary": "Water is dripping from a valve located near the temple.",
+    "urgency_reason": "Flagged low urgency for minor repair or intermittent civic issue.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -1229,22 +849,12 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-039",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "high",
-      "urgency_reason": "A broken speed breaker on a main road poses a significant safety hazard to commuters and vehicles.",
-      "location": "मुख्य रस्ता",
-      "summary": "The speed breaker on the main road is broken, causing a hazard for vehicles."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "high",
-    "urgency_reason": "A broken speed breaker on a main road poses a significant safety hazard to commuters and vehicles.",
-    "location": "मुख्य रस्ता",
-    "summary": "The speed breaker on the main road is broken, causing a hazard for vehicles.",
+    "urgency_reason": "Road damage is disrupting emergency or normal vehicle movement.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -1261,22 +871,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-040",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "high",
-      "urgency_reason": "A large accumulation of waste is emitting a foul smell, posing a public health nuisance.",
-      "location": "Under the railway bridge",
-      "summary": "There is a pile of garbage under the railway bridge causing a foul smell."
-    },
     "category": "garbage",
     "department": "Sanitation",
-    "urgency": "high",
-    "urgency_reason": "A large accumulation of waste is emitting a foul smell, posing a public health nuisance.",
-    "location": "Under the railway bridge",
-    "summary": "There is a pile of garbage under the railway bridge causing a foul smell.",
+    "urgency": "medium",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -1293,22 +893,12 @@
       "department": "Electrical"
     },
     "duplicate_group": "DUP-04",
-    "cluster_id": "DUP-04",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "medium",
-      "urgency_reason": "The park gate light is non-functional, which may affect visibility and security at the entrance.",
-      "location": "Park gate",
-      "summary": "The light at the park gate has stopped working following the rain."
-    },
     "category": "streetlight",
     "department": "Electrical",
     "urgency": "medium",
-    "urgency_reason": "The park gate light is non-functional, which may affect visibility and security at the entrance.",
-    "location": "Park gate",
-    "summary": "The light at the park gate has stopped working following the rain.",
+    "urgency_reason": "A streetlight that failed after rain needs a standard electrical repair.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Streetlight complaint.",
     "photo_severity": null
   },
   {
@@ -1325,22 +915,12 @@
       "department": "Drainage"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-042",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "high",
-      "urgency_reason": "A broken drain grate poses a safety hazard and is causing water to accumulate.",
-      "location": "Near the society",
-      "summary": "The drain grate near the society is broken, causing water to accumulate."
-    },
     "category": "drainage",
     "department": "Drainage",
-    "urgency": "high",
-    "urgency_reason": "A broken drain grate poses a safety hazard and is causing water to accumulate.",
-    "location": "Near the society",
-    "summary": "The drain grate near the society is broken, causing water to accumulate.",
+    "urgency": "medium",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Drainage complaint.",
     "photo_severity": null
   },
   {
@@ -1357,22 +937,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-043",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "high",
-      "urgency_reason": "A dead animal poses a significant health and hygiene risk to the public.",
-      "location": "Next to the bus depot",
-      "summary": "A dead animal is lying near the bus depot and needs to be removed."
-    },
-    "category": "garbage",
+    "category": "other",
     "department": "Sanitation",
-    "urgency": "high",
-    "urgency_reason": "A dead animal poses a significant health and hygiene risk to the public.",
-    "location": "Next to the bus depot",
-    "summary": "A dead animal is lying near the bus depot and needs to be removed.",
+    "urgency": "medium",
+    "urgency_reason": "A dead animal requires sanitation removal and safe disposal.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Other complaint.",
     "photo_severity": null
   },
   {
@@ -1389,22 +959,12 @@
       "department": "Roads"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-044",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "medium",
-      "urgency_reason": "Missing tiles on the footpath pose a tripping hazard, particularly for senior citizens.",
-      "location": "unknown",
-      "summary": "Missing tiles on the footpath are making it difficult for senior citizens to walk."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "medium",
-    "urgency_reason": "Missing tiles on the footpath pose a tripping hazard, particularly for senior citizens.",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
     "location": "unknown",
-    "summary": "Missing tiles on the footpath are making it difficult for senior citizens to walk.",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -1421,23 +981,13 @@
       "department": "Water Supply"
     },
     "duplicate_group": "DUP-06",
-    "cluster_id": "DUP-06",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "high",
-      "urgency_reason": "A burst pipe is causing continuous water flow onto the road, which can lead to flooding or road damage.",
-      "location": "Near the school",
-      "summary": "A burst pipe is causing continuous water flow on the road near the school."
-    },
     "category": "water_leak",
     "department": "Water Supply",
     "urgency": "high",
-    "urgency_reason": "A burst pipe is causing continuous water flow onto the road, which can lead to flooding or road damage.",
-    "location": "Near the school",
-    "summary": "A burst pipe is causing continuous water flow on the road near the school.",
-    "photo_severity": "medium"
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "pipe phoot gaya hai",
+    "summary": "Automated rule triage: Water leak complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-046",
@@ -1453,22 +1003,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": "DUP-06",
-    "cluster_id": "DUP-06",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "high",
-      "urgency_reason": "An active water line leak is causing continuous water wastage and flooding the footpath.",
-      "location": "Ward 12 school lane",
-      "summary": "Water line leakage reported in Ward 12 school lane causing the footpath to be wet."
-    },
     "category": "water_leak",
     "department": "Water Supply",
     "urgency": "high",
-    "urgency_reason": "An active water line leak is causing continuous water wastage and flooding the footpath.",
-    "location": "Ward 12 school lane",
-    "summary": "Water line leakage reported in Ward 12 school lane causing the footpath to be wet.",
+    "urgency_reason": "An active water-line leak needs prompt repair to prevent water loss and a slippery footpath.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   },
   {
@@ -1485,23 +1025,13 @@
       "department": "Roads"
     },
     "duplicate_group": "DUP-07",
-    "cluster_id": "DUP-07",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "high",
-      "urgency_reason": "The pothole is large enough to trap vehicle tires, posing a significant hazard to commuters.",
-      "location": "Market road",
-      "summary": "A large pothole on Market road has caused an auto-rickshaw's tire to get stuck."
-    },
     "category": "road_damage",
     "department": "Roads",
     "urgency": "high",
-    "urgency_reason": "The pothole is large enough to trap vehicle tires, posing a significant hazard to commuters.",
-    "location": "Market road",
-    "summary": "A large pothole on Market road has caused an auto-rickshaw's tire to get stuck.",
-    "photo_severity": "medium"
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Road damage complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-048",
@@ -1517,22 +1047,12 @@
       "department": "Roads"
     },
     "duplicate_group": "DUP-07",
-    "cluster_id": "DUP-07",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "road_damage",
-      "department": "Roads",
-      "severity": "critical",
-      "urgency_reason": "The user explicitly states the pothole is dangerous, implying a high risk of accidents.",
-      "location": "Main market",
-      "summary": "A dangerous pothole has been reported on the main market road requiring immediate repair."
-    },
     "category": "road_damage",
     "department": "Roads",
-    "urgency": "critical",
-    "urgency_reason": "The user explicitly states the pothole is dangerous, implying a high risk of accidents.",
-    "location": "Main market",
-    "summary": "A dangerous pothole has been reported on the main market road requiring immediate repair.",
+    "urgency": "high",
+    "urgency_reason": "Flagged high urgency due to continuous leak, major disruption, or public hazard.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Road damage complaint.",
     "photo_severity": null
   },
   {
@@ -1549,23 +1069,13 @@
       "department": "Sanitation"
     },
     "duplicate_group": "DUP-08",
-    "cluster_id": "DUP-08",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "high",
-      "urgency_reason": "The overflowing garbage pile is attracting stray dogs and creating unsanitary conditions.",
-      "location": "Community hall",
-      "summary": "Garbage accumulation outside the community hall is attracting stray dogs."
-    },
     "category": "garbage",
     "department": "Sanitation",
-    "urgency": "high",
-    "urgency_reason": "The overflowing garbage pile is attracting stray dogs and creating unsanitary conditions.",
-    "location": "Community hall",
-    "summary": "Garbage accumulation outside the community hall is attracting stray dogs.",
-    "photo_severity": "high"
+    "urgency": "medium",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Garbage complaint.",
+    "photo_severity": null
   },
   {
     "id": "CMP-050",
@@ -1581,22 +1091,12 @@
       "department": "Sanitation"
     },
     "duplicate_group": "DUP-08",
-    "cluster_id": "DUP-08",
-    "is_duplicate": true,
-    "prediction": {
-      "category": "garbage",
-      "department": "Sanitation",
-      "severity": "high",
-      "urgency_reason": "The accumulated garbage has been left for several days and is emitting a strong odor, indicating rotting waste.",
-      "location": "Near the hall gate",
-      "summary": "Garbage has been accumulating near the hall gate for several days, causing a strong smell."
-    },
     "category": "garbage",
     "department": "Sanitation",
-    "urgency": "high",
-    "urgency_reason": "The accumulated garbage has been left for several days and is emitting a strong odor, indicating rotting waste.",
-    "location": "Near the hall gate",
-    "summary": "Garbage has been accumulating near the hall gate for several days, causing a strong smell.",
+    "urgency": "medium",
+    "urgency_reason": "Standard civic maintenance issue routed via rule triage.",
+    "location": "kachra kai din se pada hai",
+    "summary": "Automated rule triage: Garbage complaint.",
     "photo_severity": null
   },
   {
@@ -1613,22 +1113,12 @@
       "department": "Electrical"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-051",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "streetlight",
-      "department": "Electrical",
-      "severity": "low",
-      "urgency_reason": "The streetlight is flickering, which is a minor maintenance issue.",
-      "location": "Lane 8",
-      "summary": "The streetlight in Lane 8 is flickering, causing poor visibility at night."
-    },
     "category": "streetlight",
     "department": "Electrical",
-    "urgency": "low",
-    "urgency_reason": "The streetlight is flickering, which is a minor maintenance issue.",
-    "location": "Lane 8",
-    "summary": "The streetlight in Lane 8 is flickering, causing poor visibility at night.",
+    "urgency": "medium",
+    "urgency_reason": "Poor visibility from a faulty streetlight needs a standard electrical repair.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Streetlight complaint.",
     "photo_severity": null
   },
   {
@@ -1645,22 +1135,12 @@
       "department": "Drainage"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-052",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "high",
-      "urgency_reason": "The overflowing drain is causing water to collect on the road, which disrupts movement and sanitation.",
-      "location": "near the clinic",
-      "summary": "Drainage is overflowing near the clinic, causing water to flood the road."
-    },
     "category": "drainage",
     "department": "Drainage",
     "urgency": "high",
-    "urgency_reason": "The overflowing drain is causing water to collect on the road, which disrupts movement and sanitation.",
-    "location": "near the clinic",
-    "summary": "Drainage is overflowing near the clinic, causing water to flood the road.",
+    "urgency_reason": "Drain water reaching a street needs prompt drainage clearance.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Drainage complaint.",
     "photo_severity": null
   },
   {
@@ -1677,22 +1157,12 @@
       "department": "Drainage"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-053",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "drainage",
-      "department": "Drainage",
-      "severity": "critical",
-      "urgency_reason": "An open manhole on a footpath poses an immediate risk of serious injury or death, especially to children.",
-      "location": "unknown",
-      "summary": "An open manhole on a footpath is creating a severe safety hazard for pedestrians."
-    },
-    "category": "drainage",
+    "category": "other",
     "department": "Drainage",
     "urgency": "critical",
-    "urgency_reason": "An open manhole on a footpath poses an immediate risk of serious injury or death, especially to children.",
+    "urgency_reason": "An open manhole is an immediate fall hazard and needs emergency drainage action.",
     "location": "unknown",
-    "summary": "An open manhole on a footpath is creating a severe safety hazard for pedestrians.",
+    "summary": "Automated rule triage: Other complaint.",
     "photo_severity": null
   },
   {
@@ -1709,22 +1179,12 @@
       "department": "Water Supply"
     },
     "duplicate_group": null,
-    "cluster_id": "SINGLE-CMP-054",
-    "is_duplicate": false,
-    "prediction": {
-      "category": "water_leak",
-      "department": "Water Supply",
-      "severity": "medium",
-      "urgency_reason": "Active water wastage from a leaking tap requires maintenance to conserve water resources.",
-      "location": "Near the temple",
-      "summary": "Water is leaking from a tap near the temple due to a faulty valve."
-    },
     "category": "water_leak",
     "department": "Water Supply",
-    "urgency": "medium",
-    "urgency_reason": "Active water wastage from a leaking tap requires maintenance to conserve water resources.",
-    "location": "Near the temple",
-    "summary": "Water is leaking from a tap near the temple due to a faulty valve.",
+    "urgency": "low",
+    "urgency_reason": "A dripping tap or valve issue can be handled as a routine water-supply repair.",
+    "location": "unknown",
+    "summary": "Automated rule triage: Water leak complaint.",
     "photo_severity": null
   }
 ]

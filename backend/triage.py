@@ -16,6 +16,7 @@ from google import genai
 from google.genai import types
 import requests
 
+from backend.fast_rules import classify_fast
 from backend.schema import ComplaintTriage
 
 load_dotenv()
@@ -116,6 +117,10 @@ def triage_complaint(
     Supports switchable backends: 'gemini' or 'ollama' (via LLM_BACKEND env or parameter).
     Retries once on failure and falls back to ComplaintTriage.fallback() if both attempts fail.
     """
+    fast_result = classify_fast(complaint, photo_path=photo_path)
+    if fast_result is not None:
+        return fast_result.model_dump()
+
     chosen_backend = (backend or os.environ.get("LLM_BACKEND", LLM_BACKEND)).lower()
 
     for attempt in range(2):
