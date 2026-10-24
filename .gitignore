@@ -7,3 +7,9 @@ __pycache__/
 .vscode/
 data/uploads/
 data/submitted_complaints.json
+
+frontend/node_modules/
+
+frontend/.next/
+
+frontend/.vercel/
