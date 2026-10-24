@@ -138,6 +138,7 @@ def triage_complaint(
     """
     fast_result = classify_fast(complaint, photo_path=photo_path)
     if fast_result is not None:
+        fast_result.populate_confidence(text=complaint, photo_path=photo_path)
         return fast_result.model_dump()
 
     chosen_backend = (backend or os.environ.get("LLM_BACKEND", LLM_BACKEND)).lower()
@@ -151,6 +152,7 @@ def triage_complaint(
 
             raw_data = parse_json(raw_text)
             validated = ComplaintTriage.model_validate(raw_data)
+            validated.populate_confidence(text=complaint, photo_path=photo_path)
             return validated.model_dump()
         except Exception as e:
             print(f"[triage_complaint] Attempt {attempt + 1} with backend '{chosen_backend}' failed: {e}")

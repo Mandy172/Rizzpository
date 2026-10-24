@@ -115,7 +115,7 @@ def classify_fast(complaint_text: str, photo_path: Optional[str] = None) -> Opti
     text_lower = text.lower()
     for patterns, category, department, urgency, reason in SPECIAL_CASES:
         if any(re.search(pattern, text_lower, re.IGNORECASE) for pattern in patterns):
-            return ComplaintTriage(
+            t = ComplaintTriage(
                 category=category,
                 department=department,
                 urgency=urgency,
@@ -124,6 +124,7 @@ def classify_fast(complaint_text: str, photo_path: Optional[str] = None) -> Opti
                 summary=f"Automated rule triage: {category.replace('_', ' ').capitalize()} complaint.",
                 photo_severity=None,
             )
+            return t.populate_confidence(text=complaint_text, photo_path=photo_path)
 
     matches = []
 
@@ -160,7 +161,7 @@ def classify_fast(complaint_text: str, photo_path: Optional[str] = None) -> Opti
     )
     location = loc_match.group(1).strip() if loc_match else "unknown"
 
-    return ComplaintTriage(
+    t = ComplaintTriage(
         category=cat,
         department=dept,
         urgency=urgency,
@@ -169,3 +170,4 @@ def classify_fast(complaint_text: str, photo_path: Optional[str] = None) -> Opti
         summary=f"Automated rule triage: {cat.replace('_', ' ').capitalize()} complaint.",
         photo_severity=None,
     )
+    return t.populate_confidence(text=complaint_text, photo_path=photo_path)
