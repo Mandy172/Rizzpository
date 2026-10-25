@@ -58,3 +58,6 @@ Open `http://localhost:3000/report` (citizen) and `http://localhost:3000` (offic
 - **bge-m3** is published by BAAI. Check its model card for the current license.
 - **Ollama** is open source (MIT).
 - Sample photos: attribution is in `data/photos/`.
+
+
+PPT LINK - https://drive.google.com/file/d/1F0XNTo8twnVCcCzoATdF9LqT0RMz4efj/view?usp=sharing
